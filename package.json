@@ -1,0 +1,28 @@
+{
+  "name": "quant_base",
+  "version": "1.0.0",
+  "description": "anyquant.net",
+  "main": "gulpfile.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-sass": "^2.1.1",
+    "through2": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "quant"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13"
+  }
+}

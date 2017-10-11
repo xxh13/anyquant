@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ data.account_name }} - AnyQuant社区{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/bbs/profile.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <div id="profile_wrapper" class="inline-block">
+        <div class="left">
+            <div class="user_header">
+                <input id="account_id" type="hidden" value="{{ data.account_id }}" />
+                <img src="/static/vender/image/profile.png" height="90" width="90"/>
+                {% if request.session.account.id|stringformat:'s' != data.account_id|stringformat:'s' %}
+                    {% if data.is_following %}
+                        <button type="button" class="btn btn-default" disabled>已关注</button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger follow">关注</button>
+                    {% endif %}
+                {% endif %}
+                <ul>
+                    <li>昵称： {{ data.account_name }}</li>
+                    <li>
+                        <a>关注数</a>
+                        <span>{{ data.following }}</span>&nbsp;&nbsp;
+                        <a>被关注数</a>
+                        <span>{{ data.follower }}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="user_achieve">
+                <div class="achieve">
+                    <a>共获得</a>
+                    <a>
+                        <i class="icon-comments"></i>
+                        <span class="comment-up">{{ data.widget_info.user_com_count }}</span>
+                        评论
+                    </a>
+                    <a>
+                        <i class="icon-thumbs-up"></i>
+                        <span class="thread-up">{{ data.widget_info.user_star_count }}</span>
+                        赞
+                    </a>
+                </div>
+            </div>
+            <div class="user_content">
+                <div id="profile_tool_bar" class="inline-block">
+                    <div class="filter">
+                        {% for typ in data.type %}
+                            <a href="/bbs/profile/{{ data.account_id }}?type={{ typ.type }}" class="{{ typ.active }}">{{ typ.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="comment_list">
+                    {% for comment in data.comment %}
+                        <div class="comment_item">
+                            <a href="/bbs/comment/{{ comment.id }}" class="comment_title">{{ comment.title }}</a>
+                            <div class="comment_content">
+                                {% filter force_escape %}
+                                    {{ comment.content|striptags }}
+                                {% endfilter %}
+                            </div>
+                            <div class="comment_footer">
+
+                                <p>
+                                    <input type="hidden" value="{{ comment.id }}" />
+                                    <a href="#">
+                                        <i class="icon-comments"></i>
+                                        {{ comment.re_count }}
+                                    </a>&nbsp;&nbsp;
+                                    <a href="#" class="comment_star">
+                                        <i class="icon-thumbs-up"></i>
+                                        {{ comment.star }}
+                                    </a>&nbsp;&nbsp;
+                                    <a href="#">
+                                        <i class="icon-time"></i>
+                                        {{ comment.date }}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% if data.comment|length == 0 %}
+                        <p class="text-center" style="padding-top: 20px;">什么都没有</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="header">最近发表</div>
+            <div class="content">
+                {% if data.recent_publish|length == 0 %}
+                    <ul id="nothing">
+                        <li>暂时还没发表任何话题~~</li>
+                    </ul>
+                {% else %}
+                    <ul>
+                        {% for comment in data.recent_publish %}
+                            <li ><a href="/bbs/comment/{{ comment.id }}">{{ comment.title|striptags }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/notify.min.js"></script>
+{% endblock %}
+
+{% block load_js_file %}
+    <script type="text/javascript" src="/static/build/js/bbs/bbs_profile.js"></script>
+{% endblock %}

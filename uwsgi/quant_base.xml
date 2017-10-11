@@ -1,0 +1,15 @@
+<uwsgi>
+    <socket>127.0.0.1:8001</socket>
+    <master>true</master>
+    <plugin>python</plugin>
+    <pidfile>/tmp/quant_base.pid</pidfile>
+    <processes>2</processes>
+    <module>quant_base.wsgi</module>
+    <pythonpath>/home/www/projects/quant_base/quant_base</pythonpath>
+    <profiler>true</profiler>
+    <memory-report>true</memory-report>
+    <enable-threads>true</enable-threads>
+    <max-requests>5000</max-requests>
+    <workers>4</workers>
+    <daemonize>/home/www/projects/quant_base/quant_base.log</daemonize>
+</uwsgi>

@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% block title %}我的策略{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/vender/css/datepicker.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/labs/lab_home.css" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+    <div id="algo_wrapper">
+        <div id="algo_toolbar" class="inline-block">
+            <div id="title" class="pull-left">
+                <div id="title_dropdown" class="dropdown pull-left">
+                    <div id="dropdown_label_wrapper" class="dropdown-toggle" data-toggle="dropdown">
+                        <a id="dropdown_label" data-target="#" href="/labs">
+                            策略列表
+                            <b class="caret pull-right"></b>
+                        </a>
+                    </div>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown_label_wrapper">
+                        <li><a href="/labs">所有</a></li>
+                        <li><a href="/labs?cate=default">默认</a></li>
+                        {% for cate in strategy_category %}
+                            <li><a href="/labs?cate={{ cate.visit_id }}">{{cate.name}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if current_category.name != '所有' %}
+                    {% if current_category.name == '默认' %}
+                        <a href="/labs?cate=default" class="title_item">默认</a>
+                    {% else %}
+                        <div class="title_item">
+                            <a href="/labs/cate={{ current_category.visit_id }}">{{ current_category.name }}</a>
+                        </div>
+                        <div class="title_item title_remove">
+                            <!--触发删除分类模态框-->
+                            <a data-toggle="modal" href="#cate_remove_modal" title="删除这个分类"><i class="icon-remove icon-sm" style="margin-right:5px;">删除</i></a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <button id="gen_btn" class="btn btn-sm pull-right" data-toggle="modal" data-target="#gen_strategy_modal"><i
+                    class="icon-plus icon-sm" style="margin-right:5px"></i>生成</button>
+            <button id="new_btn" class="btn-sm btn pull-right" data-toggle="modal" data-target="#new_strategy_modal"><i
+                    class="icon-plus icon-sm" style="margin-right:5px;"></i>新建
+            </button>
+        </div>
+        <div id="algo_list">
+            {% if strategy|length >= 1 %}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>策略起始时间</th>
+                        <th>策略结束时间</th>
+                        <th>策略所属分类</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for s in strategy %}
+                        <tr>
+                            <td class="algo-name hook" id="{{s.id}}"><a href="/labs/strategy/{{ s.visit_id }}">{{ s.name }}</a></td>
+                            <td class="algo-start hook">{{ s.start|date:"Y/m/d h:i:s" }}</td>
+                            <td class="algo-end hook">{{ s.end|date:"Y/m/d h:i:s" }}</td>
+                            <td class="algo-category hook">{{s.strategy_category}}</td>
+                            <td class="algo-ops">
+                                <!--触发改变所属分类模态框-->
+                                <input type="hidden" name="strategy_id" value="{{ s.id }}" />
+                                <input type="hidden" name="strategy_cate_id" value="{{ s.strategy_cate_id}}">
+                                <a class="algo_ops_href edit_cate" data-toggle="modal" href="#edit_cate_modal" title="改变{{ s.name }}的分类"><i class="icon-pencil icon-sm" style="margin-right:5px;"></i>编辑</a>
+                                <a class="algo_ops_href delete_strat" data-toggle="modal" href="#delete_strat_modal" title="删除策略{{ s.name }}"><i class="icon-remove icon-sm" style="margin-right:5px;"></i>删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span id="info" class="inline-block">您还没有创建过任何策略,赶快创建一个吧!</span>
+            {% endif %}
+            {% if total_pages > 1 %}
+                <div id="pagination_wrapper" class="text-center">
+                    <nav>
+                        <ul class="pagination">
+                            <!-- the first two pagination -->
+                            <li>
+                                <a href="/labs" aria-label="首页">
+                                    <span aria-hidden="true">&ll;</span>
+                                </a>
+                            </li>
+                            {% if page == 1 %}
+                                <li>
+                                    <a href="/labs" aria-label="上一页">
+                                        <span aria-hidden="true">&lt;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="/labs?page={{ page|add:"-1" }}"
+                                       aria-label="上一页">
+                                        <span aria-hidden="true">&lt;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <!-- the first two pagination end -->
+
+                            {% if page == 1 %}
+                                {% if total_pages == 1 %}
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% elif page|add:"1" == total_pages %}
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/labs?page={{ total_pages }}">
+                                            {{ total_pages }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li>
+                                        <a href="/labs?page={{ total_pages }}">
+                                            {{ total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                {% if page == 2 %}
+                                    {% if total_pages == 2 %}
+                                        <li>
+                                            <a href="/labs">
+                                                1
+                                            </a>
+                                        </li>
+                                        <li class="cur">
+                                            <a href="/labs?page={{ page }}">
+                                                {{ page }}
+                                            </a>
+                                        </li>
+                                    {% elif total_pages == 3 %}
+                                        <li>
+                                            <a href="/labs">
+                                                1
+                                            </a>
+                                        </li>
+                                        <li class="cur">
+                                            <a href="/labs?page={{ page }}">
+                                                {{ page }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/labs?page={{ total_pages }}">
+                                                {{ total_pages }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="/labs">
+                                                1
+                                            </a>
+                                        </li>
+                                        <li class="cur">
+                                            <a href="/labs?page={{ page }}">
+                                                {{ page }}
+                                            </a>
+                                        </li>
+                                        <li><span>...</span></li>
+                                        <li>
+                                            <a href="/labs?page={{ total_pages }}">
+                                                {{ total_pages }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% elif page|add:"1" == total_pages %}
+                                    <li>
+                                        <a href="/labs">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/labs?page={{ total_pages }}">
+                                            {{ total_pages }}
+                                        </a>
+                                    </li>
+                                {% elif page == total_pages %}
+                                    <li>
+                                        <a href="/labs">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li><a href="/labs">1</a></li>
+                                    <li><span>...</span></li>
+                                    <li class="cur">
+                                        <a href="/labs?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li>
+                                        <a href="/labs?page={{ total_pages }}">
+                                            {{ total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+
+                            <!-- the last two pagination -->
+                            {% if page < total_pages %}
+                                <li>
+                                    <a href="/labs?page={{ page|add:"1" }}"
+                                       aria-label="下一页">
+                                        <span aria-hidden="true">&gt;</span>
+                                    </a>
+                                </li>
+                            {% elif page == total_pages %}
+                                <li>
+                                    <a href="/labs?page={{ total_pages }}"
+                                       aria-label="下一页">
+                                        <span aria-hidden="true">&gt;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="/labs?page={{ total_pages }}"
+                                   aria-label="末页">
+                                    <span aria-hidden="true">&gg;</span>
+                                </a>
+                            </li>
+                            <!-- the last two pagination end -->
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!--删除分类模态框-->
+    <div class="modal fade" id="cate_remove_modal" tabindex="-1" role="dialog" aria-labelledby="cate_remove_title">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="cate_remove_title">删除分类</h4>
+                </div>
+                <div class="modal-body">
+                    删除此分类后，它下面的所有策略将被移入“默认”分类，确认删除吗？
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" value="{{current_category.id}}" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取消
+                    </button>
+                    <button id="remove_cate" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--改变所属分类模态框-->
+    <div class="modal fade" id="edit_cate_modal" tabindex="-1" role="dialog" aria-labelledby="edit_cate_title">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="edit_cate_title">改变所属分类</h4>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#choose_cate_tab" data-toggle="tab">选择分类</a></li>
+                    <li><a href="#new_cate_tab" data-toggle="tab">新建分类</a></li>
+                </ul>
+                <div class="tab-content">
+                    <!--choose cate-->
+                    <div class="tab-pane fade in active" id="choose_cate_tab">
+                        <div class="modal-body">
+                            <ul id="choose_cate_list" class="list-group">
+                                <li class="list-group-item"><input type="radio" name="list_id" value="-1">默认</li>
+                                {% for cate in strategy_category %}
+                                    <li class="list-group-item"><input type="radio" name="list_id" value="{{cate.id}}">{{ cate.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                取消
+                            </button>
+                            <input type="hidden" name="strat_id" value="" />
+                            <input type="hidden" name="cur_cate_id" value="{{ current_category.id }}" />
+                            <button id="choose_cate" class="btn btn-danger">确认</button>
+                        </div>
+                    </div>
+
+                    <!--new cate-->
+                    <div class="tab-pane fade" id="new_cate_tab">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="inline-block pull-left">分类名：</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="cate_name"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                取消
+                            </button>
+                            <button id="new_cate" class="btn btn-danger">新建</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--删除策略模态框-->
+    <div class="modal fade" id="delete_strat_modal" tabindex="-1" role="dialog" aria-labelledby="delete_strat_title">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delete_strat_title">删除策略</h4>
+                </div>
+                <div class="modal-body">
+                    删除此策略后将不可恢复，确认删除吗？
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="strat_id" value="" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取消
+                    </button>
+                    <button id="delete_strat" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--新建策略模态框-->
+    <div class="modal fade" id="new_strategy_modal" tabindex="-1" role="dialog"
+         aria-labelledby="new_strategy_title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="new_strategy_title">新建策略</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="inline-block pull-left" id="name">策略名：</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="strategy_name_form"
+                                       name="strategy_name"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取消
+                    </button>
+                    <button id="new_strategy_btn" class="btn btn-danger">新建</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% include "quant_lab/_modal_strategy_builder.html" %}
+
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/notify.min.js"></script>
+{% endblock %}
+
+
+{% block load_js_file %}
+    <script src="/static/vender/js/ace-builds/src-noconflict/ace.js"></script>
+    <script src="/static/vender/js/vue.min.js"></script>
+    <script src="/static/vender/js/bootstrap-datepicker.js"></script>
+
+    <script type="text/javascript" src="/static/build/js/labs/lab_home.js"></script>
+    <script src="/static/build/js/labs/strategy_builder.js"></script>
+    <script>
+        $('#start-date input, #end-date input').datepicker({
+            format: 'yyyy-mm-dd',
+            startView: 1, // year
+            autoclose: true
+        }).on('hide', function() {
+            buildervm.renderEditor();
+        })
+    </script>
+{% endblock %}

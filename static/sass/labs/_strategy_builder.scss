@@ -1,0 +1,224 @@
+@import 'autocomplete';
+%body-hight {
+    height: 90vh;
+    min-height: 600px;
+    max-height: 700px;
+    float: left;
+    position: relative;
+}
+%fill-rest {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+}
+
+/*--------------------------*\
+    # modules
+\*--------------------------*/
+
+    .step-body {
+        @extend %body-hight;
+        width: 380px;
+        border-right: 1px solid #e4e4e4;
+
+        display: flex;
+        flex-flow: column;
+
+        .step-wrapper {
+            @extend %fill-rest;
+            margin-bottom: 70px;
+            .selected-stocks {
+                @extend %fill-rest;
+                .table-faker {
+                    @extend %fill-rest;
+                    .tbody {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+    .step-nav {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        width: 320px;
+
+        button.next {
+            float: right;
+        }
+    }
+    /* step2 */
+    .step2.step-wrapper {
+        padding: 20px;
+    }
+    .stock-search .btn {
+        border-radius: 0;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    .table-faker {
+        border: 1px solid #e4e4e4;
+
+        .tbody {
+            overflow: auto;
+            height: 210px;
+            li {
+                overflow: hidden;
+            }
+        }
+        .thead, .tfoot {
+            overflow: hidden;
+            background-color: #fff;
+            color: #848484;
+        }
+        .tfoot .c {
+            background-color: #FAFAFA;
+            border-top-width: 1px;
+            border-bottom-width: 0;
+        }
+        .c {
+            float: left;
+            background-color: #FFFFFF;
+            text-align: center;
+            border: 1px solid #e4e4e4;
+            border-width: 0 1px 1px 0;
+            padding: 0 0;
+            width: 50%;
+            line-height: 42px;
+            height: 42px;
+        }
+        & .thead .c,
+        & .tfoot .c {
+            border-right: none;
+        }
+    }
+    .selected-stocks {
+        .stock-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .stock {
+            position: relative;
+            .name, .code {
+                position: relative;
+                z-index: 2;
+            }
+            .code {
+                font-size: 12px;
+                color: #b6b6b6;
+            }
+            .bg {
+                background-color: #e0eaf7;
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 100%;
+                width: 0;
+                z-index: 1;
+                transition: width .25s ease-in-out;
+            }
+        }
+        .weight {
+            color: #848484;
+            .destroy {
+                cursor: pointer;
+                margin-left: 10px;
+            }
+        }
+        .cash-remain-wrapper {
+            font-size: 16px;
+            color: #30AD63;
+            text-align: left;
+            padding: 0 0 0 30px;
+        }
+        .form-control {
+            line-height: 19px;
+            font-size: 12px;
+            height: auto;
+            width: 80px;
+            display: inline-block;
+            margin-right: 6px;
+            border-radius: 0;
+        }
+    }
+
+    .public-body {
+        @extend %body-hight;
+        width: 600px;
+
+        .strategy-code-preview {
+            height: 100%;
+
+            .public-wrapper {
+                height: 100%;
+                padding-top: 75px;
+                margin-top: -75px;
+            }
+        }
+    }
+
+    #editor {
+        height: 100%;
+    }
+
+/*--------------------------*\
+    # resets
+\*--------------------------*/
+
+    .strategy-builder {
+        label {
+            color: #777;
+            font-weight: normal;
+        }
+        input {
+            padding: 3px;
+        }
+        h3 {
+            margin: 0;
+            padding: 25px 0;
+            font-size: 20px;
+            text-align: center;
+            font-weight: normal;
+            border-bottom: 3px solid #e4e4e4;
+        }
+
+        .modal-dialog {
+            width: 982px;
+        }
+        .modal-body {
+            overflow: hidden;
+            padding: 0;
+        }
+        .form-inline {
+            padding: 50px 0 0 60px;
+        }
+        .form-group {
+            margin: 0 0 20px;
+        }
+        .form-control {
+            border-radius: 0;
+        }
+        .input-group-addon {
+            color: #777;
+            background-color: transparent;
+            border: none;
+        }
+    }
+    .datepicker {
+        z-index: 1151 !important;
+    }
+/*--------------------------*\
+    # theme
+\*--------------------------*/
+.strategy-builder {
+    .btn-primary {
+        background-color: #c44;
+        border-color: #a44;
+        &:hover {
+            background-color: #a44;
+            border-color: #a44;
+        }
+    }
+}

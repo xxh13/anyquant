@@ -1,0 +1,249 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}AnyQuant管理员{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/admin/bbs.css" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <div id="comment_wrapper" class="inline-block">
+        <div class="left">
+            <div id="comment_tool_bar" class="inline-block">
+                <div class="filter">
+                    {% for cate in data.category %}
+                        <a href="/admin/bbs?category={{ cate.id }}" class="{{ cate.active }}">{{ cate.name }}</a>
+                    {% endfor %}
+                </div>
+                <div class="search_form">
+                    <form method="GET" action="/admin/bbs_search">
+                        <input name="search" class="form-control" type="text" placeholder="输入标题/内容/作者查找"/>
+                    </form>
+                </div>
+            </div>
+            <div id="comment_list_wrapper" class="inline-block">
+                <div id="comment_list">
+                    {% for comment in data.comment %}
+                        <div class="comment_item">
+                                <a href="/bbs/comment/{{ comment.id }}" class="comment_title">{{ comment.title }}</a>
+                                <input type="hidden" value="{{ comment.id }}" />
+                                <a href="#" class="comment_del" style="float: right">
+                                    <i class="icon-remove"></i>
+                                    删除
+                                </a>
+                                <div class="comment_content">
+                                    {% filter force_escape %}
+                                        {{ comment.content|striptags }}
+                                    {% endfilter %}
+                                </div>
+                                <div class="comment_footer">
+                                    <a href="/bbs/profile/{{comment.author_id}}"><i class="icon-user" style="margin-right: 5px"></i>{{ comment.author }}
+                                    </a>
+
+                                    <p class="pull-right">
+                                        <a href="#">
+                                            <i class="icon-comments"></i>
+                                            {{ comment.re_count }}
+                                        </a>&nbsp;&nbsp;
+                                        <a href="#" class="comment_star">
+                                            <i class="icon-thumbs-up"></i>
+                                            {{ comment.star }}
+                                        </a>&nbsp;&nbsp;
+                                        <a href="#">
+                                            <i class="icon-time"></i>
+                                            {{ comment.date }}
+                                        </a>
+                                    </p>
+                                </div>
+                        </div>
+                    {% endfor %}
+                    {% if data.comment|length == 0 %}
+                        <p class="text-center" style="padding-top: 20px;">暂无文章</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% if data.comment|length > 0 %}
+                <div id="pagination_wrapper" class="text-center">
+                <nav>
+                    <ul class="pagination">
+                        <!-- the first two pagination -->
+                        <li>
+                            <a href="/admin/bbs?category={{ data.active_cate_id }}" aria-label="首页">
+                                <span aria-hidden="true">&ll;</span>
+                            </a>
+                        </li>
+                        {% if data.page == 1 %}
+                            <li>
+                                <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page|add:"-1" }}" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <!-- the first two pagination end -->
+
+                        {% if data.page == 1 %}
+                            {% if data.total_pages == 1 %}
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            {% if data.page == 2 %}
+                                {% if data.total_pages == 2 %}
+                                    <li>
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                {% elif data.total_pages == 3 %}
+                                    <li>
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li>
+                                        <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% elif data.page == data.total_pages %}
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li><a href="/admin/bbs/?category={{ data.active_cate_id }}&page=1">1</a></li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        <!-- the last two pagination -->
+                        {% if data.page < data.total_pages %}
+                            <li>
+                                <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.page|add:"1" }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% elif data.page == data.total_pages %}
+                            <li>
+                                <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="/admin/bbs/?category={{ data.active_cate_id }}&page={{ data.total_pages }}" aria-label="末页">
+                                <span aria-hidden="true">&gg;</span>
+                            </a>
+                        </li>
+                        <!-- the last two pagination end -->
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/notify.min.js"></script>
+{% endblock %}
+
+{% block load_js_file %}
+    <script type="text/javascript" src="/static/build/js/admin/bbs.js"></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% verbatim %}
+<div class="step-wrapper step1" v-show="step === 1">
+  <form class="form-inline">
+    <div class="form-group" id="strategy-name">
+      <label class="control-label">策略名称: </label>
+      <input type="text" class="form-control" autocomplete="off" v-model="strategyName">
+    </div>
+    <div class="form-group" id="start-date">
+      <label class="control-label">起始日期: </label>
+      <div class="input-group">
+        <input type="text" class="date start-date form-control hasDatepicker" autocomplete="off" v-model="startDate">
+        <div class="input-group-addon">
+          <i class="icon-calendar"></i>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" id="end-date">
+      <label class="control-label">结束日期: </label>
+      <div class="input-group">
+        <input type="text" class="date end-date form-control hasDatepicker" autocomplete="off" v-model="endDate">
+        <div class="input-group-addon">
+          <i class="icon-calendar"></i>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" id="capital-base">
+      <label class="control-label">初始资金: </label>
+      <div class="input-group">
+        <input type="text" class="number form-control" autocomplete="off" @change="renderEditor" v-model="capitalBase" number>
+        <div class="input-group-addon">元</div>
+      </div>
+    </div>
+    <div class="form-group" id="refresh-rate">
+      <label class="control-label">调仓频率: </label>
+      <div class="input-group">
+        <input type="text" class="number form-control" autocomplete="off" @change="renderEditor" v-model="refreshRate" number>
+        <div class="input-group-addon">交易日</div>
+      </div>
+    </div>
+  </form>
+  <div class="step-nav clearfix">
+    <button class="btn btn-primary next" @click="step = 2">下一步</button>
+  </div>
+</div>
+{% endverbatim %}

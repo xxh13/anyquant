@@ -1,0 +1,54 @@
+{% verbatim %}
+
+<div class="step-wrapper step2" v-show="step === 2">
+  <div class="form-group stock-search">
+    <div class="input-group">
+      <input class="form-control ui-autocomplete-input" type="text" placeholder="输入股票名称/代码" autocomplete="off" @blur="hideHintlist" @input="fetchCandidates" v-model="stockInput">
+      <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+      <div class="input-group-btn">
+        <button class="btn btn-primary submit" @click="select(stockInput)">添加</button>
+      </div>
+    </div>
+    <ul class="ui-autocomplete ui-menu" tabindex="0" style="display: none">
+      <li v-for="stock in candidateStocks" class="ui-menu-item">
+        <a @mousedown="stockInput = stock.name">
+          <span class="name">{{ stock.name }}</span>
+          <span class="code">{{ stock.code }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="selected-stocks">
+    <div class="table-faker">
+      <div class="thead">
+        <span class="c">股票({{ selectedStocks.length }})只</span>
+        <span class="c">仓位权重 <i class="icon-random fifty-fifty" title="平均分"></i></span>
+      </div>
+      <div class="tbody">
+        <ul class="stock-list">
+          <li v-for="stock in selectedStocks" class="stock-item">
+            <span class="c stock">
+              <span class="name">{{ stock.name }}</span>
+              <span class="code">({{ stock.code }})</span>
+              <span class="bg" style="width: {{stock.weight}}%;"></span>
+            </span>
+            <span class="c weight">
+              <input class="form-control" type="text" @change="renderEditor" v-model="stock.weight" number> %
+              <i class="icon-remove destroy" @click="selectedStocks.$remove(stock), renderEditor()"></i>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="tfoot">
+        <span class="c">可用现金</span>
+        <span class="c cash-remain-wrapper">{{ cashRemain }}%</span>
+      </div>
+    </div>
+  </div>
+  <div class="step-nav clearfix">
+    <a class="btn btn-link prev" @click="step = 1">上一步</a>
+    <button class="btn btn-primary next" disabled="{{ cashRemain !== '0.00'}}" @click="build">创建主题策略</button>
+  </div>
+</div>
+
+{% endverbatim %}

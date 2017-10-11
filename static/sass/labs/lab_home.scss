@@ -1,0 +1,168 @@
+@import "strategy_builder";
+
+#main {
+  margin-top: 50px;
+}
+
+/*--------------------- start algo_list ---------------------*/
+#algo_wrapper {
+  width: 90.0%;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 15px;
+
+  #algo_toolbar {
+    width: 100%;
+
+    #title {
+      width: 480px;
+      border-bottom: 1px solid transparent;
+      border-image: linear-gradient(to right, #B1191A 0%, #FFFFFF 100%);
+      border-image-slice: 2;
+
+      #title_dropdown {
+        #dropdown_label {
+          display: block;
+          width: 160px;
+          height: 30px;
+          line-height: 30px;
+          padding: 0px 10px;
+          background: none repeat scroll 0% 0% #B1191A;
+          color: #FFF;
+          text-decoration: none;
+
+          .caret {
+            margin-top: 12.5px;
+          }
+        }
+
+        .dropdown-menu {
+          background: none repeat scroll 0% 0% #C81623;
+          border: 0px solid;
+          border-radius: 0px;
+          box-shadow: none;
+
+          li a{
+            color: #FFF;
+          }
+
+          li a:hover{
+            background: none repeat scroll 0% 0% #F7F7F7;
+            color: #B61D1D;
+          }
+        }
+      }
+
+      .title_item {
+        float: left;
+        margin-left: 10px;
+        height: 30px;
+        line-height: 30px;
+
+        a {
+          font-size: 15px;
+          color: #B61D1D;
+        }
+      }
+
+      .title_remove {
+        a {
+          font-size: 12px;
+          color: #BBB;
+        }
+      }
+    }
+
+    #gen_btn, #new_btn {
+      margin-right: 10px;
+      background: #CC4444;
+      color: #FFF;
+      border-radius: 6px;
+    }
+  }
+
+  #algo_list {
+    margin-top: 35px;
+
+    table {
+      thead th {
+        padding: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #FFF;
+        background: none repeat scroll 0% 0% #CCC;
+      }
+
+      tbody {
+        tr {
+          cursor: pointer;
+          td {
+            padding: 6px;
+          }
+        }
+
+        .algo-ops a {
+          font-size: 12px;
+          color: #666;
+        }
+        /*.algo-name a{
+          font-weight: bold;
+          color: #C81623;
+        }*/
+      }
+    }
+
+    #info {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+
+#edit_cate_modal {
+  #choose_cate_list .list-group-item {
+    padding: 2px 15px;
+    border: none;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  #new_cate_tab {
+    .modal-body .row label {
+      line-height: 35px;
+    }
+  }
+}
+
+#new_strategy_modal {
+  #name {
+    line-height: 35px;
+  }
+
+  #new_strategy_btn {
+    background: #CC4444;
+    color: #FFF;
+  }
+}
+
+#pagination_wrapper {
+  .pagination {
+    li {
+      a, span {
+        color: #D9534F;
+      }
+    }
+
+    li.cur {
+      a {
+        background-color: #EEE;
+      }
+    }
+  }
+}
+
+/*--------------------- end algo_list ---------------------*/

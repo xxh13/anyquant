@@ -1,0 +1,67 @@
+/*--------------------- start vars ---------------------*/
+$background-color: #CC3333;
+$font-family: DFKai-SB;
+/*--------------------- end vars ---------------------*/
+
+#header {
+    border: 0px;
+    box-shadow: 0px 0px 0px #F99;
+
+    padding: 10px;
+}
+
+/*--------------------- start main_header ---------------------*/
+#main_header {
+    width: 100%;
+    height: 1024px; /* Fallback for browsers that don't support the calc() function*/
+    height: -moz-calc(100vh);
+    height: calc(100vh);
+    min-height: 850px;
+    background-color: $background-color;
+    text-align: center;
+    
+    #main_header_content {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+    
+    #main_header_text {
+        margin-top: -50px;
+        animation: 2s ease 0s normal none 1 running fadein;
+        font-family: $font-family;
+        font-size: 41px;
+        font-weight: 300;
+        color: #FFFFFF;
+    }
+    
+    #main_header_btn {
+        margin-top: 10px;
+        background-color: #FFFFFF;
+        width:140px;
+        height:45px;
+        font-family: $font-family;
+        font-size: 21px;
+        font-weight: 300;
+        color: #333;
+        box-shadow: 0px 0px 40px rgba(255, 255, 255, 0.3);
+    }
+}
+/*--------------------- end main_header ---------------------*/
+
+
+/*--------------------- start main_info ---------------------*/
+#main_info {
+    width: 100%;
+    min-height: 650px;
+    max-height: 1024px;
+    text-align: center;
+    padding-top: 200px;
+    
+    ul {
+        width: 83.3333%;
+        list-style: outside none none;
+    }
+}
+/*--------------------- end main_info ---------------------*/

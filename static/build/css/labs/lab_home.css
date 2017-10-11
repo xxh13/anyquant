@@ -1,0 +1,171 @@
+.step-body, .public-body {
+  height: 90vh;
+  min-height: 600px;
+  max-height: 700px;
+  float: left;
+  position: relative; }
+
+.step-body .step-wrapper, .step-body .step-wrapper .selected-stocks, .step-body .step-wrapper .selected-stocks .table-faker {
+  flex: 1;
+  display: flex;
+  flex-flow: column; }
+
+/*--------------------------*# modules
+\*--------------------------*/
+.step-body {
+  width: 380px;
+  border-right: 1px solid #e4e4e4;
+  display: flex;
+  flex-flow: column; }
+  .step-body .step-wrapper {
+    margin-bottom: 70px; }
+    .step-body .step-wrapper .selected-stocks .table-faker .tbody {
+      flex: 1; }
+
+.step-nav {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 320px; }
+  .step-nav button.next {
+    float: right; }
+
+/* step2 */
+.step2.step-wrapper {
+  padding: 20px; }
+
+.stock-search .btn {
+  border-radius: 0;
+  padding-left: 25px;
+  padding-right: 25px; }
+
+.table-faker {
+  border: 1px solid #e4e4e4; }
+  .table-faker .thead, .table-faker .tfoot {
+    overflow: hidden;
+    background-color: #fff;
+    color: #848484; }
+  .table-faker .tfoot .c {
+    background-color: #FAFAFA;
+    border-top-width: 1px;
+    border-bottom-width: 0; }
+  .table-faker .c {
+    float: left;
+    background-color: #FFFFFF;
+    text-align: center;
+    border: 1px solid #e4e4e4;
+    border-width: 0 1px 1px 0;
+    padding: 0 0;
+    width: 50%;
+    line-height: 42px;
+    height: 42px; }
+  .table-faker .thead .c,
+  .table-faker .tfoot .c {
+    border-right: none; }
+
+.selected-stocks .cash-remain-wrapper {
+  font-size: 16px;
+  color: #30AD63;
+  text-align: left;
+  padding: 0 0 0 30px; }
+
+.public-body {
+  width: 600px; }
+  .public-body .strategy-code-preview {
+    height: 100%; }
+    .public-body .strategy-code-preview .public-wrapper {
+      height: 100%;
+      padding-top: 75px;
+      margin-top: -75px; }
+
+#editor {
+  height: 100%; }
+
+/*--------------------------*    # resets
+    \*--------------------------*/
+.strategy-builder label {
+  color: #777;
+  font-weight: normal; }
+
+.strategy-builder input {
+  padding: 3px; }
+
+.strategy-builder h3 {
+  margin: 0;
+  padding: 25px 0;
+  font-size: 20px;
+  text-align: center;
+  font-weight: normal;
+  border-bottom: 3px solid #e4e4e4; }
+
+.strategy-builder .modal-dialog {
+  width: 982px; }
+
+.strategy-builder .modal-body {
+  overflow: hidden;
+  padding: 0; }
+
+.strategy-builder .form-inline {
+  padding: 50px 0 0 60px; }
+
+.strategy-builder .form-group {
+  margin: 0 0 20px; }
+
+.strategy-builder .form-control {
+  border-radius: 0; }
+
+.strategy-builder .input-group-addon {
+  color: #777;
+  background-color: transparent;
+  border: none; }
+
+#main {
+  margin-top: 50px; }
+
+/*--------------------- start algo_list ---------------------*/
+#algo_wrapper {
+  width: 90.0%;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 15px; }
+  #algo_wrapper #algo_toolbar {
+    width: 100%; }
+    #algo_wrapper #algo_toolbar #title {
+      font-size: 20px;
+      width: 450px;
+      border-bottom: 1px solid transparent;
+      border-image: linear-gradient(to right, #333333 0%, #FFFFFF 100%);
+      border-image-slice: 2; }
+    #algo_wrapper #algo_toolbar #gen_btn,
+    #algo_wrapper #algo_toolbar #new_btn {
+      margin-right: 10px;
+      background: #CC4444;
+      color: #FFF;
+      border-radius: 6px; }
+  #algo_wrapper #algo_list {
+    margin-top: 15px; }
+    #algo_wrapper #algo_list table thead th {
+      font-size: 16px;
+      font-weight: normal; }
+    #algo_wrapper #algo_list table tbody .algo-name {
+      font-weight: bold; }
+    #algo_wrapper #algo_list #info {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold; }
+
+#new_strategy_modal #name {
+  line-height: 35px; }
+
+#new_strategy_modal #new_strategy_btn {
+  background: #CC4444;
+  color: #FFF; }
+
+#pagination_wrapper .pagination li a, #pagination_wrapper .pagination li span {
+  color: #D9534F; }
+
+#pagination_wrapper .pagination li.cur a {
+  background-color: #EEE; }
+
+/*--------------------- end algo_list ---------------------*/

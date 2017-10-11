@@ -1,0 +1,106 @@
+/*--------------------- start vars ---------------------*/
+$background-color: #CC3333;
+$font-family: DFKai-SB;
+/*--------------------- end vars ---------------------*/
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*--------------------- start common ---------------------*/
+.inline-block {
+    display: inline-block;
+}
+
+a, a:hover, a:active, a:visited {
+    color: #333;
+    text-decoration: none;
+}
+/*--------------------- end common ---------------------*/
+
+
+/*--------------------- start nav header ---------------------*/
+#header {
+    background-color: $background-color;
+    box-shadow: 0px 0px 10px #F99;
+    font-size: 16px;
+    font-weight:bold;
+    
+    a {
+        color: #FFF;
+    }
+    
+    a:hover, a:focus {
+        color: #FFCB2F;
+    }
+}
+
+#login_dropdown {
+    #user{
+        background-color: $background-color;
+    }
+
+    .dropdown-menu {
+        min-width: 100px;
+        padding: 0px !important;
+
+        li a, li a:hover, li a:focus {
+            color: #000;
+            font-size: 14px;
+            font-weight: normal;
+        }
+    }
+}
+
+#feedback_btn {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+#login_modal {
+  .login-label {
+    line-height: 35px;
+  }
+
+  #login_btn {
+    background: #CC4444;
+    color: #FFF;
+  }
+}
+/*--------------------- end nav header ---------------------*/
+
+
+/*--------------------- start main ---------------------*/
+#main{
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto -70px;
+    
+    .push {
+        height: 70px;
+    }
+}
+/*--------------------- end main ---------------------*/
+
+
+/*--------------------- start footer ---------------------*/
+#footer {
+    height: 70px;
+    clear: both;
+    background: $background-color;
+    text-align: center;
+    font-family: $font-family;
+    font-size: 10px;
+    color: #FFF;
+    
+    img {
+        margin-bottom: -10px;
+    }
+}
+/*--------------------- end footer ---------------------*/

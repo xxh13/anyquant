@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" type="text/css" href="/static/vender/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/build/css/base/base.css" />
+  
+  <script type="text/javascript" src="/static/vender/js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="/static/vender/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/build/js/common/base.js"></script>
+	
+  {% block jsfile %}{% endblock %}
+  {% block cssfile %}{% endblock %}
+</head>
+
+<body>
+    <nav id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" id="logo"><img src="/static/vender/image/logo.png" width="" height="50"></img></a>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-navtitle" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="navtitle"><a href="/">首页</a></li>
+                    <li class="navtitle"><a href="/labs/">我的策略</a></li>
+                    <li class="navtitle"><a href="/bbs">社区</a></li>
+                    <li class="navtitle"><a href="/help">帮助</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <button type="button" id="feedback_btn" class="btn btn-default"
+                                data-toggle="modal" data-target="#feedback_modal">我要反馈</button>
+                    </li>
+                    {% if request.session.account %}
+                        <li class="navtitle dropdown" id="login_dropdown">
+                            <a id="user" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-haspopup="true" aria-expanded="false">{{ request.session.account.name }}<span class="caret"></span></a>
+                            <ul class="dropdown-menu" aria-labelledby="user">
+                                <li><a href="#">个人信息</a></li>
+                                <li><a href="/logout">注销</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="navtitle"><a data-toggle="modal" href="#login_modal">登录</a></li>
+                        <li class="navtitle"><a href="/register">注册</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="modal fade" id="login_modal" tabindex="-1" role="dialog"
+    aria-labelledby="login_title" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="login_title">登录 是一种态度</h4>
+          </div>
+          <form method="post" action="/login/">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <label class="inline-block pull-left login-label">用户名：</label>
+                </div>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="username" autofocus='autofocus'/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <label class="inline-block pull-left login-label">密码：</label>
+                </div>
+                <div class="col-md-9">
+                  <input type="password" class="form-control" name="password"/>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn" data-dismiss="modal">取消</button>
+              <button type="submit" class="btn btn-danger" id="login_btn">登录</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <div id="main">
+    {% block content %}{% endblock %}
+    <div class="push"><!--not put anything here--></div>
+  </div>
+
+  <footer id="footer">
+      <img height="55" src="/static/vender/image/logo.png"></img>
+      <p>@2015 <a href="http://www.miibeian.gov.cn">苏ICP备14002894号-5</a> 南京慕测信息科技有限公司</p>
+  </footer>
+
+    <div class="modal fade" id="feedback_modal" tabindex="-1" role="dialog" aria-labelledby="feedback_title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="feedback_title">我要反馈(吐槽)</h4>
+                </div>
+                <!--<form action="/feedback/" method="POST">-->
+                <div class="modal-body">
+                    <textarea class="form-control" rows="3" name="feedback_content" id="feedback_area"></textarea>
+                    <input type="hidden" name="account" value="0"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-danger" id="feedback_post">提交</button>
+                </div>
+                <!--</form>-->
+            </div>
+        </div>
+    </div>
+
+{% block load_js_file %}
+{% endblock %}
+
+</body>
+</html>

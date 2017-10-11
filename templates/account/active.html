@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}激活您的账号{% endblock %}
+
+{% block content %}
+    <div class="text-center" style="margin-top: 10%">
+    <h3>{{ data }}</h3>
+    <h4>
+        {% if status == 'ok' %}
+            点击<a href="/login">此处</a>登录账号
+        {% else %}
+            点击<a href="/" style="color: red">首页</a>返回
+        {% endif %}
+    </h4>
+    </div>
+{% endblock %}

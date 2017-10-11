@@ -1,0 +1,74 @@
+/*--------------------- start vars ---------------------*/
+/*--------------------- end vars ---------------------*/
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0; }
+
+/*--------------------- start common ---------------------*/
+.inline-block {
+  display: inline-block; }
+
+a, a:hover, a:active, a:visited {
+  color: #333;
+  text-decoration: none; }
+
+/*--------------------- end common ---------------------*/
+/*--------------------- start nav header ---------------------*/
+#header {
+  background-color: #CC3333;
+  box-shadow: 0px 0px 10px #F99;
+  font-size: 16px;
+  font-weight: bold; }
+  #header a {
+    color: #FFF; }
+  #header a:hover, #header a:focus {
+    color: #FFCB2F; }
+
+#login_dropdown #user {
+  background-color: #CC3333; }
+
+#login_dropdown .dropdown-menu {
+  min-width: 100px;
+  padding: 0px !important; }
+  #login_dropdown .dropdown-menu li a, #login_dropdown .dropdown-menu li a:hover, #login_dropdown .dropdown-menu li a:focus {
+    color: #000;
+    font-size: 14px;
+    font-weight: normal; }
+
+#feedback_btn {
+  margin-top: 10px;
+  margin-right: 10px; }
+
+#login_modal .login-label {
+  line-height: 35px; }
+
+#login_modal #login_btn {
+  background: #CC4444;
+  color: #FFF; }
+
+/*--------------------- end nav header ---------------------*/
+/*--------------------- start main ---------------------*/
+#main {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto -70px; }
+  #main .push {
+    height: 70px; }
+
+/*--------------------- end main ---------------------*/
+/*--------------------- start footer ---------------------*/
+#footer {
+  height: 70px;
+  clear: both;
+  background: #CC3333;
+  text-align: center;
+  font-family: DFKai-SB;
+  font-size: 10px;
+  color: #FFF; }
+  #footer img {
+    margin-bottom: -10px; }
+
+/*--------------------- end footer ---------------------*/

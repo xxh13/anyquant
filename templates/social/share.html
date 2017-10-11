@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}分享{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/labs/labs.css" type="text/css">
+    <style type="text/css">
+    .share_wrapper {
+        margin-left: 20%;
+        margin-right: 20%;;
+    }
+        #editor {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container" style="margin-top: 50px">
+        <div class="share_wrapper">
+            <h3 class="text-center">
+                {% if data.title %}
+                    {{ data.title }} @ {{ data.author }}
+                {% else %}
+                    No Result
+                {% endif %}
+            </h3>
+
+            <!-- 代码区域-->
+            <div id="editor">{{ data.code }}</div>
+
+            <!-- 运行结果 -->
+            <div id="result_params">
+                {{ data.result_params|safe }}
+            </div>
+
+            <!-- 运行图表 -->
+            <div id="result_chart_area" style="height: 600px;width: 800px;">
+                {{ data.svg_content|safe }}
+            </div>
+        </div>
+        <script type="text/javascript">
+        </script>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" src="/static/vender/js/ace-builds/src-noconflict/ext-language_tools.js"></script>
+    <script type="text/javascript" src="/static/vender/js/highcharts.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/python");
+            editor.setReadOnly(true)
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}AnyQuant{% endblock %}
+
+{% block cssfile %}
+<link rel="stylesheet" href="/static/vender/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/build/css/index/index.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div id="main_header">
+        <div id="main_header_content">
+            <a id="logo">
+                <img src="/static/vender/image/logo.png"></img>
+            </a>
+            <p id="main_header_text">
+               您的量化交易管家<br>
+               为您实现真正的精打细算 
+            </p>
+            <a id="main_header_btn" class="btn" href="/labs/strategy/demo">
+                尝试一下
+            </a>
+        </div>
+    </div>
+    <div id="main_info" class="row">
+        <ul class="inline-block">
+            <li class="col-md-3">
+                <i class="icon-umbrella icon-5x"></i>
+                <h3>基于模型，理性决策</h3>
+                <p>利用事实说话，避免主观判断</p>
+            </li>
+            <li class="col-md-3">
+                <i class="icon-bar-chart icon-5x"></i>
+                <h3>历史数据，真实模拟</h3>
+                <p>策略效果不知道？一测便知</p>
+            </li>
+            <li class="col-md-3">
+                <i class="icon-coffee icon-5x"></i>
+                <h3>行情监测，自动交易</h3>
+                <p>您只需喝着咖啡数钱</p>
+            </li>
+            <li class="col-md-3">
+                <i class="icon-desktop icon-5x"></i>
+                <h3>在线编程，无需配置</h3>
+                <p>随时随地，想用就用</p>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}
+
+{% block load_js_file %}
+{% endblock %}

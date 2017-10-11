@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+
+{% block title %}AnyQuant论坛{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/vender/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="/static/build/css/bbs/comment.css" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+    <div id="comment_wrapper" class="inline-block">
+        <div class="left">
+            <div id="comment_area">
+                <div id="comment_title">{{ data.comment.title }}</div>
+                <div id="comment_info">
+                    <a href="/bbs/profile/{{data.comment.author_id}}"><strong>{{ data.comment.author }}</strong></a> 发表于 {{ data.comment.date }}
+
+                    <span class="pull-right">
+                        <input type="hidden" value="{{ data.comment.id }}" />
+                        <a href="#" class="comment_star">
+                            <i class="icon-thumbs-up" style="margin-right: 5px"></i>{{ data.comment.star }}
+                        </a>
+                    </span>
+                </div>
+                <div id="comment_content">
+                    {{ data.comment.content|safe }}
+                </div>
+            </div>
+            <div id="re_comment_area">
+                {% if data.re_comment|length == 0 %}
+                    <p class="text-center" style="border-top: 2px solid #DDD;">暂无评论</p>
+                {% else %}
+                    <div>{{ data.re_comment|length }}条评论</div>
+                {% endif %}
+                <div id="re_comment_list">
+                    {% for re_comment in data.re_comment %}
+                        <div class="re_comment_item">
+                            <div class="re_comment_header">
+                                <a href="/bbs/profile/{{re_comment.author_id}}"><strong>{{ re_comment.author }}</strong></a>
+                                <p class="pull-right">{{ re_comment.date }}</p>
+                            </div>
+                            <div class="re_comment_content">
+                                {{ re_comment.content|safe }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if data.re_comment|length > 0 %}
+                <div id="pagination_wrapper" class="text-center">
+                    <nav>
+                    <ul class="pagination">
+                        <!-- the first two pagination -->
+                        <li>
+                            <a href="/bbs/comment/{{ data.comment.id }}" aria-label="首页">
+                                <span aria-hidden="true">&ll;</span>
+                            </a>
+                        </li>
+                        {% if data.page == 1 %}
+                            <li>
+                                <a href="/bbs/comment/{{ data.comment.id }}" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page|add:"-1" }}" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <!-- the first two pagination end -->
+
+                        {% if data.page == 1 %}
+                            {% if data.total_pages == 1 %}
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            {% if data.page == 2 %}
+                                {% if data.total_pages == 2 %}
+                                    <li>
+                                        <a href="/bbs/comment/{{ data.comment.id }}">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                {% elif data.total_pages == 3 %}
+                                    <li>
+                                        <a href="/bbs/comment/{{ data.comment.id }}">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="/bbs/comment/{{ data.comment.id }}">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li>
+                                        <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% elif data.page == data.total_pages %}
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li><a href="/bbs/comment/{{ data.comment.id }}">1</a></li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        <!-- the last two pagination -->
+                        {% if data.page < data.total_pages %}
+                            <li>
+                                <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.page|add:"1" }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% elif data.page == data.total_pages %}
+                            <li>
+                                <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="/bbs/comment/{{ data.comment.id }}?page={{ data.total_pages }}" aria-label="末页">
+                                <span aria-hidden="true">&gg;</span>
+                            </a>
+                        </li>
+                        <!-- the last two pagination end -->
+                    </ul>
+                </nav>
+                </div>
+                {%endif%}
+            </div>
+            <div id="reply_comment">
+                <div id="reply_comment_header">
+                    <span>发表回复</span>
+                </div>
+                <!-- 回复评论框-->
+                <div id="reply_toolbar" class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                    <div class="btn-group">
+                        <a type="button" class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)">
+                            <i class="icon-bold"></i>
+                        </a>
+                        <a type="button" class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)">
+                            <i class="icon-italic"></i>
+                        </a>
+                        <a class="btn" data-edit="strikethrough" title="Strikethrough">
+                            <i class="icon-strikethrough"></i>
+                        </a>
+                        <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)">
+                            <i class="icon-underline"></i>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="insertunorderedlist" title="Bullet list">
+                            <i class="icon-list-ul"></i>
+                        </a>
+                        <a class="btn" data-edit="insertorderedlist" title="Number list">
+                            <i class="icon-list-ol"></i>
+                        </a>
+                        <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)">
+                            <i class="icon-indent-left"></i>
+                        </a>
+                        <a class="btn" data-edit="indent" title="Indent (Tab)">
+                            <i class="icon-indent-right"></i>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i
+                                class="icon-align-left"></i></a>
+                        <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i
+                                class="icon-align-center"></i></a>
+                        <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i
+                                class="icon-align-right"></i></a>
+                        <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i
+                                class="icon-align-justify"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i
+                                class="icon-link"></i></a>
+
+                        <div class="dropdown-menu input-append">
+                            <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+                            <button class="btn" type="button">Add</button>
+                        </div>
+                        <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i
+                                class="icon-picture"></i></a>
+                        <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 39px; height: 30px;"/>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+                        <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+                    </div>
+                </div>
+                <div id="editor" contenteditable="true">
+                </div>
+
+                <div id="post_area">
+                    <button class="btn btn-danger pull-right" id="post_comment">发表</button>
+                    <img id="captcha_img" class="pull-right" style="margin-right: 10px; margin-left: 10px;" src="/img/captcha" title="点击刷新验证码"/>
+                    <div class="pull-right">
+                        <input type="hidden" value="{{ data.comment.id }}" name="parent_id" id="parent_id"/>
+                        <input type="hidden" value="{{ data.comment.title }}"
+                               name="parent_title" id="parent_title"/>
+                        <input type="hidden" value="{{ data.category_id }}" name="category_id" id="category_id" />
+                        <input class="form-control" type="text" name="code" id="captcha_code" placeholder="输入验证码" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="profile">
+                <div class="top">
+                    <img src="/static/vender/image/profile.png" height="50" width="50">
+                    <a href="/bbs/profile/{{data.comment.author_id}}">
+                        {{ data.comment.author }}
+                    </a>
+                </div>
+                <div class="summary">
+                    <ul>
+                        {% for post in data.widget_info.author_post %}
+                            <li>
+                                <a href="/bbs/comment/{{ post.id }}">{{ post.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="adv"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="/static/vender/js/bootstrap-wysiwyg.js"></script>
+    <script type="text/javascript" src="/static/vender/js/notify.min.js"></script>
+    <script type="text/javascript" src="/static/vender/js/highlight.pack.js"></script>
+{% endblock %}
+
+{% block load_js_file %}
+    <script type="text/javascript" src="/static/build/js/bbs/comment.js"></script>
+    <script type="text/javascript" src="/static/build/js/bbs/bbs.js"></script>
+{% endblock %}

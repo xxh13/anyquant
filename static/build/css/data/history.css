@@ -1,0 +1,39 @@
+#main {
+  margin-top: 50px; }
+
+#stock_wrapper {
+  width: 90.0%;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 15px; }
+  #stock_wrapper #stock_toolbar {
+    width: 100%; }
+    #stock_wrapper #stock_toolbar #title {
+      font-size: 20px;
+      width: 40%;
+      border-bottom: 1px solid transparent;
+      border-image: linear-gradient(to right, #333333 0%, #FFFFFF 100%);
+      border-image-slice: 2; }
+    #stock_wrapper #stock_toolbar input[name="raw_code"] {
+      display: inline-block;
+      margin-left: 25%;
+      width: 20%; }
+    #stock_wrapper #stock_toolbar #search_btn {
+      margin-left: 10px;
+      background: #CC4444;
+      color: #FFF;
+      border-radius: 6px; }
+  #stock_wrapper #stock_list {
+    margin-top: 50px; }
+    #stock_wrapper #stock_list table thead th {
+      font-size: 16px;
+      font-weight: normal; }
+    #stock_wrapper #stock_list #info {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold; }
+    #stock_wrapper #stock_list #pagination_wrapper .pagination li a, #stock_wrapper #stock_list #pagination_wrapper .pagination li span {
+      color: #D9534F; }
+    #stock_wrapper #stock_list #pagination_wrapper .pagination li.cur a {
+      background-color: #EEE; }

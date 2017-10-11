@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}我的交易{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/datepicker.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/vender/css/bootstrap-select.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/labs/labs.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div id="lab_container">
+        <div class="nav-sidebar">
+            <ul class="nav nav-sidebar-ul">
+                <li class="nav-sidebar-item">
+                    <a href="/labs/">
+                        <span class="icon-folder-open icon-2x"></span>
+                        <span>我的策略</span>
+                    </a>
+                </li>
+                <li class="nav-sidebar-item">
+                    <a href="/stock/history_data">
+                        <span class="icon-tasks icon-2x"></span>
+                        <span>我的数据</span>
+                    </a>
+                </li>
+                <li class="nav-sidebar-item">
+                    <a href="/help#toc_2">
+                        <span class="icon-cogs icon-2x"></span>
+                        <span>API说明</span>
+                    </a>
+                </li>
+            </ul>
+            <hr/>
+            <ul class="nav nav-sidebar-ul">
+                <li class="nav-sidebar-item">
+                    <a href="#" id="" >
+                        <span class="icon-play icon-large"></span>
+                        <span id="run_algo" class="run_algo_click" data-loading-text="正在运行">运行</span>
+                    </a>
+                </li>
+                <li class="nav-sidebar-item">
+                    <a href="#">
+                        <span class="icon-stop icon-large"></span>
+                        <span>暂停</span>
+                    </a>
+                </li>
+                <li class="nav-sidebar-item">
+                    <a href="#" id="code_erase">
+                        <span class="icon-reply icon-large"></span>
+                        <span>清除</span>
+                    </a>
+                </li>
+            </ul>
+
+            <button id="share" data-toggle="modal" data-target="#share_modal">
+                分享
+            </button>
+        </div>
+
+        <div id="code_container">
+            <div id="code_ops" class="inline-block">
+                <div id="algo_title" class="pull-left">
+                    <i class="icon-reorder icon-large" style="color:#666;"></i>
+                    <span class="inline-block">{{ strategy_name }}</span>
+                </div>
+                <input type="hidden" value="{{ strategy_id }}" name="strategy_id" id="strategy_id"/>
+                <button id="run_algo_btn"  data-loading-text="正在运行" class="btn btn-sm pull-right run_algo_click" autocomplete="off">
+                    <i class="icon-play" style="margin-right:5px; color:#555;"></i>运行策略
+                </button>
+                <div class="form-inline pull-right inline-block">
+                    <div class="inline-block controls-group" id="datepicker">
+                        <input class="controls input-sm form-control form-datetime" id="start_time" readonly/>
+                        <label>至</label>
+                        <input class="controls input-sm form-control form-datetime" id="end_time" readonly/>
+                    </div>
+                    <div class="input-group inline-block controls-group">
+                        <span class="input-group-addon">￥</span>
+                        <input class="controls controls-sm input-sm form-control"
+                               type="text" id="capital_base" value="{{ params.capital_base }}"/>
+                    </div>
+                    <div class="inline-block controls-group">
+                        <select class="controls controls-sm selectpicker freq btn-group-sm" id="freq">
+                            <option>每天</option>
+                            <option>每分钟</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="code_wrapper" class="inline-block">
+                <div id="code_area">
+                    <div id="editor">{{ code }}</div>
+                </div>
+                <div id="result_area">
+                    <div class="col-md11">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>年化收益率</td>
+                                <td>基准年化收益率</td>
+                                <td>阿尔法</td>
+                                <td>贝塔</td>
+                                <td>夏普比率</td>
+                                <td>收益波动比率</td>
+                                <td>信息比率</td>
+                                <td>最大回撤</td>
+                            </tr>
+                            <tr>
+                                <td><strong id="annual_returns">--</strong></td>
+                                <td><strong id="bench_annual_returns">--</strong></td>
+                                <td><strong id="alpha">--</strong></td>
+                                <td><strong id="beta">--</strong></td>
+                                <td><strong id="sharpe">--</strong></td>
+                                <td><strong id="volatility">--</strong></td>
+                                <td><strong id="information">--</strong></td>
+                                <td><strong id="max_drawdown">--</strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="result_chart_area" class="col-md-11">
+                    </div>
+                    <div id="result_log_area" class="col-md-11">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="share_modal" tabindex="-1" role="dialog" aria-labelledby="shareModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="shareModal">分享到论坛</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">标题: </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="share_title"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">概述: </label>
+                            <div class="col-md-8">
+                                <textarea rows="5" cols="48" id="share_content" style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="share_btn">分享</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+    <script type="text/javascript" src="/static/vender/js/ace-builds/src-noconflict/ace.js"></script>
+    <script type="text/javascript" src="/static/vender/js/ace-builds/src-noconflict/ext-language_tools.js"></script>
+    <script type="text/javascript" src="/static/vender/js/highcharts.js"></script>
+    <script type="text/javascript" src="/static/vender/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="/static/vender/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/static/vender/js/notify.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var s = "{{ params.start }}";
+            var e = "{{ params.end }}";
+
+            $("#start_time").datepicker("update", new Date(s.replace(/-/g, " ") + " 08:00:00"));
+            $("#end_time").datepicker("update", new Date(e.replace(/-/g, " ") + " 08:00:00"));
+        }
+    </script>
+
+{% endblock %}
+
+{% block load_js_file %}
+    <script src="/static/build/js/labs/labs.js"></script>
+    <script src="/static/build/js/labs/editor.js"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+<div class="strategy-builder modal fade" id="gen_strategy_modal" tabindex="-1" role="dialog" aria-labelledby="new_strategy_title">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="step-body">
+          <h3>主题投资组合调仓</h3>
+          {% include "quant_lab/_strategy_builder_step1.html" %}
+          {% include "quant_lab/_strategy_builder_step2.html" %}
+        </div>
+        <div class="public-body">
+          <div class="strategy-code-preview">
+            <h3>策略代码预览</h3>
+            <div class="public-wrapper">
+              <div id="editor"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

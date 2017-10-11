@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}注册新用户{% endblock %}
+
+{% block cssfile %}
+  <link rel="stylesheet" href="/static/build/css/register/register.css">
+{% endblock %}
+
+{% block content %}
+<div id="register_wrapper">
+    <div id="register_title">
+        <h2>注册 是一种态度</h2>
+    </div>
+    {% if done %}
+        <h3 class="text-center">恭喜完成注册，请查看注册邮箱激活邮件<br> <br>激活后即可登录!</h3>
+    {% else %}
+    <form class="form-inline" id="register_form" method="post" action="" onsubmit="return checkForm()">
+        <div class="row">
+            <input id="user_email" class="form-control input_field" name="email" type="email" placeholder="邮箱用于激活邮件"
+            autofocus="autofocus" required="required" value="{{ email }}"/>
+        </div>
+        <div class="row">
+            <input id="user_name" class="form-control input_field" name="username" type="text" placeholder="用户名"
+            required="required" value="{{ name }}"/>
+        </div>
+        <div class="row">
+            <input id="user_password" class="form-control input_field" name="password" type="password"
+                   placeholder="密码" required="required" value="{{ password }}"/>
+        </div>
+        <div class="row">
+            <input id="user_repassword" class="form-control input_field" name="repassword" type="password"
+                   placeholder="确认密码" required="required" value="{{ password }}"/>
+        </div>
+        <div class="row">
+            <input id="user_invitecode" class="form-control" style="width: 60%"
+                   name="code" type="text" placeholder="输入验证码" required="required"/>
+            <img id="captcha_img" class="pull-right" style="margin-right: 10px; margin-left: 10px;"
+                 src="/img/captcha" title="点击刷新验证码"/>
+        </div>
+        {% if error %}
+            <div class="row" id="error">
+                {{error}}
+            </div>
+        {% endif %}
+        <div class="row">
+            <button id="register_btn" class="btn" type="submit">注册</button>
+        </div>
+    </form>
+{% endif %}
+</div>
+{% endblock %}
+
+
+{% block load_js_file %}
+<script>
+    function checkForm(){
+        var email = document.getElementById('user_email');
+        var name = document.getElementById('user_name');
+        var password = document.getElementById('user_password');
+        var form = document.getElementById('register_form');
+        if(email.value == ""){
+            alert('邮箱为空');
+            return false;
+        }
+        if(name.value == ""){
+            alert('姓名为空');
+            return false;
+        }
+        if(password.value == ""){
+            alert('密码为空');
+            return false;
+        }
+        return true;
+    }
+</script>
+{% endblock %}

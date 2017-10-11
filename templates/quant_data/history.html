@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block title %}股票数据{% endblock %}
+
+{% block cssfile %}
+    <link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/static/build/css/data/history.css" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+    <div id="stock_wrapper">
+        <div id="stock_toolbar" class="inline-block">
+            <div id="title" class="pull-left">最新数据</div>
+            <form id="code_form" action="/stock/history_data_detail" method="get">
+                <input type="text" name="code" value="" style="display: none" />
+                <input type="text" name="raw_code" class="form-control" placeholder="股票代码/名称" list="code_list" autocomplete="off" required />
+                <datalist id="code_list">
+                </datalist>
+                <button id="search_btn" class="btn-sm btn submit"><i class="icon-search icon-sm" style="margin-right:5px;"></i>查找
+                </button>
+            </form>
+        </div>
+        <div id="stock_list">
+            {% if data.stock|length >= 1 %}
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>股票代码</th>
+                        <th>股票名称</th>
+                        <th>开盘价</th>
+                        <th>收盘价</th>
+                        <th>最高价</th>
+                        <th>最低价</th>
+                        <th>后复权价</th>
+                        <th>成交量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for stoc in data.stock %}
+                        <tr>
+                            <td>{{ stoc.date }}</td>
+                            <td class="stock-code"><a href="/stock/history_data_detail?code={{ stoc.code }}">{{ stoc.code }}</a></td>
+                            <td>{{ stoc.name }}</td>
+                            <td>{{ stoc.open }}</td>
+                            <td>{{ stoc.close }}</td>
+                            <td>{{ stoc.high }}</td>
+                            <td>{{ stoc.low }}</td>
+                            <td>{{ stoc.adj_price }}</td>
+                            <td>{{ stoc.volume }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span id="info" class="inline-block">暂无数据</span>
+            {% endif %}
+            {% if data.stock|length > 0 %}
+                <div id="pagination_wrapper" class="text-center">
+                <nav>
+                    <ul class="pagination">
+                        <!-- the first two pagination -->
+                        <li>
+                            <a href="/stock/history_data" aria-label="首页">
+                                <span aria-hidden="true">&ll;</span>
+                            </a>
+                        </li>
+                        {% if data.page == 1 %}
+                            <li>
+                                <a href="/stock/history_data?page=1" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="/stock/history_data?page={{ data.page|add:"-1" }}" aria-label="上一页">
+                                    <span aria-hidden="true">&lt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <!-- the first two pagination end -->
+
+                        {% if data.page == 1 %}
+                            {% if data.total_pages == 1 %}
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/stock/history_data?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/stock/history_data?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            {% if data.page == 2 %}
+                                {% if data.total_pages == 2 %}
+                                    <li>
+                                        <a href="/stock/history_data?page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/stock/history_data?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                {% elif data.total_pages == 3 %}
+                                    <li>
+                                        <a href="/stock/history_data?page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/stock/history_data?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/stock/history_data?page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="/stock/history_data?page=1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="cur">
+                                        <a href="/stock/history_data?page={{ data.page }}">
+                                            {{ data.page }}
+                                        </a>
+                                    </li>
+                                    <li><span>...</span></li>
+                                    <li>
+                                        <a href="/stock/history_data?page={{ data.total_pages }}">
+                                            {{ data.total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% elif data.page|add:"1" == data.total_pages %}
+                                <li>
+                                    <a href="/stock/history_data?page=1">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/stock/history_data?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% elif data.page == data.total_pages %}
+                                <li>
+                                    <a href="/stock/history_data?page=1">
+                                        1
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li><a href="/stock/history_data?page=1">1</a></li>
+                                <li><span>...</span></li>
+                                <li class="cur">
+                                    <a href="/stock/history_data?page={{ data.page }}">
+                                        {{ data.page }}
+                                    </a>
+                                </li>
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/stock/history_data?page={{ data.total_pages }}">
+                                        {{ data.total_pages }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        <!-- the last two pagination -->
+                        {% if data.page < data.total_pages %}
+                            <li>
+                                <a href="/stock/history_data?page={{ data.page|add:"1" }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% elif data.page == data.total_pages %}
+                            <li>
+                                <a href="/stock/history_data?page={{ data.total_pages }}" aria-label="下一页">
+                                    <span aria-hidden="true">&gt;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="/stock/history_data?page={{ data.total_pages }}" aria-label="末页">
+                                <span aria-hidden="true">&gg;</span>
+                            </a>
+                        </li>
+                        <!-- the last two pagination end -->
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}
+
+{% block load_js_file %}
+    <script type="text/javascript" src="/static/build/js/data/history.js"></script>
+{% endblock %}
