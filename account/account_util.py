@@ -14,7 +14,8 @@ def _send_to_user_email(email, subject, content):
     """
     try:
         return send_mail(subject, content, EMAIL_HOST_USER, [email], fail_silently=False)
-    except:
+    except Exception as e:
+	print e
         return 0
 
 
@@ -26,6 +27,7 @@ def send_register_email(email, active_code):
     :return:
     """
     subject = u'[账号激活]欢迎使用AnyQuant'
-    content = '\n'.join(["请点击以下链接以激活您的账号",
-                         "http://www.anyquant.net/account/active/?code=" + active_code])
+    content = '\n'.join([u"请点击以下链接以激活您的账号",
+                         "http://120.27.199.164:8000/account/active/?code=" + active_code])
+
     return _send_to_user_email(email, subject, content)

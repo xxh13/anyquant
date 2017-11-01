@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -23,9 +22,9 @@ SECRET_KEY = '1phiwz9513p2m6rxhs9!(twhje3l=9t$31q29twi1z*5^=m3kb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+#TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -76,6 +75,7 @@ DATABASES = {
 }
 
 #log config
+"""
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -121,7 +121,7 @@ LOGGING = {
         }
     }
 }
-
+"""
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -154,17 +154,37 @@ STATICFILES_DIRS = (
 )
 
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), "../templates").replace("\\", "/"),
-)
+#TEMPLATES = (
+#    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+#    # Always use forward slashes, even on Windows.
+#    # Don't forget to use absolute paths, not relative paths.
+#    os.path.join(BASE_DIR, "templates").replace("\\", "/"),
+#)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],           # templates
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+	#'TEMPLATE_DEBUG': False,
+	#'TEMPLATE_CONTEXT_PROCESSORS': [
+	#  "django.core.context_processors.request",
+	#  "django.contrib.auth.context_processors.auth",
+	#]
+    },
+]
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.request",
-    "django.contrib.auth.context_processors.auth",
-)
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    "django.core.context_processors.request",
+#    "django.contrib.auth.context_processors.auth",
+#)
 
 DEFAULT_INDEX_TABLESPACE = ""
 
@@ -185,9 +205,10 @@ USER_PER_PAGE = 10
 STOCK_PER_PAGE = 20
 
 #EMAIl 配置
-EMAIL_HOST='smtp.126.com'
-EMAIL_HOST_USER='notice_noreply@126.com'
-EMAIL_HOST_PASSWORD='605605'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.163.com'
+EMAIL_HOST_USER='15850781776@163.com'
+EMAIL_HOST_PASSWORD='xxh82814680'
 EMAIL_USE_TLS=True
 
 #管理员配置

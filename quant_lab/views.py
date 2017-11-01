@@ -107,7 +107,7 @@ def new_strategy(request):
 
 
 def index(request):
-    return render_to_response("index.html", RequestContext(request))
+    return render_to_response("index.html", {})
 
 
 @login_check
@@ -240,7 +240,7 @@ def run_algo(request):
 
 
 def quant_help(request):
-    return render_to_response('help.html', RequestContext(request))
+    return render_to_response('help.html', {})
 
 
 @login_check

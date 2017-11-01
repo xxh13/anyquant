@@ -6,7 +6,8 @@ from quant_base.settings import STOCK_PER_PAGE
 from quant_lab.models import Stock, StockInfo, StockSHA300
 from data_util import get_max_date_stock, get_stocks_count
 
-from django.shortcuts import render_to_response, RequestContext, redirect
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.http import HttpResponse

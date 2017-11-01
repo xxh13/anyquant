@@ -4,7 +4,8 @@ import pytz
 import math
 import json
 
-from django.shortcuts import render_to_response,RequestContext,redirect
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from django.http import HttpResponse
 from django.db.models import Q
 

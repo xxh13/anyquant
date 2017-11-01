@@ -18,13 +18,13 @@ def post_comment(account_id, title, content, parent_id=-1, category_id=1):
     :param parent_id:
     :return:
     """
-    account = Account.objects.get(id=account_id)
-    category = Category.objects.get(id=category_id)
+    try:
+        account = Account.objects.get(id=account_id)
+        category = Category.objects.get(id=category_id)
 
-    comment = Comment(account_id=account, category_id=category, title=title, content=content,
+        comment = Comment(account_id=account, category_id=category, title=title, content=content,
                       parent_id=parent_id, date=datetime.now())
 
-    try:
         comment.save()
         return comment.id, True
     except Exception, e:

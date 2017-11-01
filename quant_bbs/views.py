@@ -208,11 +208,13 @@ def bbs_submit(request):
     """
     if request.method == 'POST':
         account_id = request.session.get('account')
+	print account_id
 
         flag = post_comment(account_id=account_id['id'], title=request.POST.get('title'),
                      content=request.POST.get('content'),
                      parent_id=int(request.POST.get('parent_id', -1)),
                      category_id=int(request.POST.get('category_id', 1)))
+	print flag
 
         if flag:
             return HttpResponse(json.dumps({'status': 'ok'}))
