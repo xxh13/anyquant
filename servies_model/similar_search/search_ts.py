@@ -34,7 +34,8 @@ class find_similar(object):
                 return
         self.df=df[df['label']==label]
         self.df_raw=df_raw
-        self.ts={'time_series_close':ts_close,'time_series_high':ts_high,'time_series_low':ts_low,'time_series_open':ts_open,'time_series_volume':ts_vol}
+        self.ts={'time_series_close':ts_close,'time_series_high':ts_high,'time_series_low':ts_low,
+                 'time_series_open':ts_open,'time_series_volume':ts_vol}
 
     @staticmethod
     def cos_dis(x,y):
@@ -75,13 +76,23 @@ class find_similar(object):
             plot_data=self.df_raw[(self.df_raw['code']==temp['code']) & (self.df_raw['trade_date']==temp['trade_date'])]['time_series_close'].values[0]
             axe.plot(plot_data)
 
-if __name__=='__main__':
-    con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
-    code='002044'
-    date=datetime.date(2017,10,25)
-    test_find_similar=find_similar(code,date,'close',5)
-    print(test_find_similar.erro)
-    #test_find_similar.count_distance()
-    #test_find_similar.summary()
-    #test_find_similar.statis(con)
-    #con.close()
+
+def search_similar(code, date, feature, step=5, **kwargs):
+    """
+    :param code: string
+    :param date: datetime
+    :param feature: string
+    :param step: int
+    :param kwargs:
+    :return: [[,,,,], [,,,,]]
+    """
+    usr = find_similar(code, date, 'close', step)
+    if not usr.erro:
+        usr.count_distance()
+        usr.summary()
+        # usr.statis(get_con())
+    else:
+        return False, 'no data'
+    return True, [usr.result, usr.predict]
+
+
