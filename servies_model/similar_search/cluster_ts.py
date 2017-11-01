@@ -75,8 +75,8 @@ class cluster_ts(object):
 if __name__=='__main__':
     con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
     for feature in ['close','open','high','low','volume']:
-        for step in [3,5,7,9]:
-            cluster=cluster_ts(con,'close')
+        for step in [5,7]:
+            cluster=cluster_ts(con,feature)
             cluster.split_time_series(step=step)
             cluster.cluster(1000)
             cluster.save()
