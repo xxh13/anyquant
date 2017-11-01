@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.conf.urls import url
 from django.http import HttpResponse
+from models import StockInfo
 
 # Create your views here.
 
 
 def stock_index(request):
+    # data = StockInfo.objects.filter("")
     return HttpResponse("hello index")
 
 
