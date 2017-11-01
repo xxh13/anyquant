@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'social',
     'quant_admin',
     'quant_data',
+    'quant_stock'
 )
 
 MIDDLEWARE_CLASSES = (
