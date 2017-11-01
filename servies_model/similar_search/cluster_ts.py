@@ -6,7 +6,6 @@ import numpy as np
 import sqlalchemy as sa
 import pandas as pd
 import sklearn.cluster
-import datetime
 
 class cluster_ts(object):
     def __init__(self,con,feature_name):
@@ -75,7 +74,10 @@ class cluster_ts(object):
 
 if __name__=='__main__':
     con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
-    test_cluster=cluster_ts(con,'close')
-    test_cluster.split_time_series()
-    test_cluster.cluster(1000)
-    test_cluster.save()
+    for feature in ['close','open','high','low','volume']:
+        for step in [3,5,7,9]:
+            cluster=cluster_ts(con,'close')
+            cluster.split_time_series(step=step)
+            cluster.cluster(1000)
+            cluster.save()
+    con.close()
