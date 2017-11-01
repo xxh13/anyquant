@@ -24,9 +24,9 @@ def stock_similar(request):
     method: post
     field: code trade_date, feature
     """
-    if request.method != 'GET':
+    if request.method != 'POST':
         return HttpResponse(json.dumps({'status': 'error'}))
-    data = request.GET
+    data = request.POST
     code = data.get('stock_code', None)
     trade_date = data.get('trade_date', None)
     feature = data.get('feature', 'close')
