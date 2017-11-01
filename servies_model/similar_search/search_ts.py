@@ -17,8 +17,9 @@ class find_similar(object):
         :param feature_name: string
         :param step: int
         """
-        path_df=os.path.realpath('ts_{0}_{1}.pkl'.format(step,feature_name))
-        path_df_raw=os.path.realpath('ts_raw_{0}_{1}.pkl'.format(step,feature_name))
+        rootdir=os.getcwd() + '\servies_model\similar_search'
+        path_df=os.path.join(rootdir,'ts_{0}_{1}.pkl'.format(step,feature_name))
+        path_df_raw=os.path.join(rootdir,'ts_raw_{0}_{1}.pkl'.format(step,feature_name))
         df=pd.read_pickle(path_df)
         df_raw=pd.read_pickle(path_df_raw)
         try:
@@ -107,4 +108,5 @@ if __name__=='__main__':
     feature='close'
     step=5
     dic={'close':0.6,'open':0.1,'high':0.1,'low':0.1,'volume':0.1}
-    result=search_similar(code, date, feature, step, close=0.6, open=0.1, high=0.1, low=0.1, volume=0.1)
+    ok, result=search_similar(code, date, feature, step, close=0.6, open=0.1, high=0.1, low=0.1, volume=0.1)
+    print result
