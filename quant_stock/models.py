@@ -38,6 +38,6 @@ class StockData(models.Model):
     turnover = models.FloatField('turnover', max_length=10)
 
     class Meta:
-        db_table = 'stocks_data'
-        verbose_name = 'stocks_data'
+        db_table = 'stock_data'
+        verbose_name = 'stock_data'
 
