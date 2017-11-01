@@ -9,6 +9,7 @@ from anyquant import views as anyquant_views
 from quant_admin import views as quant_admin_views
 from social import views as social_views
 from quant_data import views as quant_data_views
+from quant_stock.views import stock_urls
 
 urlpatterns = (
     # Examples:
@@ -96,4 +97,6 @@ urlpatterns += (
     url(r'stock/history_data$', quant_data_views.stock_data_all),
     url(r'stock/history_data_detail$', quant_data_views.stock_detail_basic)
 )
+
+urlpatterns += stock_urls
 # urlpatterns = patterns(r'^register/', register)
