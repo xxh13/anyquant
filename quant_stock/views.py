@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.conf.urls import url
 from django.http import HttpResponse
 from servies_model.similar_search.search_ts import search_similar
@@ -14,7 +14,11 @@ from MyJson import MyJSONEncoder
 
 def stock_index(request):
     # data = StockInfo.objects.filter("")
-    return HttpResponse("hello index")
+    return render_to_response('data_service/service_home.html', {})
+
+
+def stock_similar_home(request):
+    return render_to_response('data_service/similar_analysis.html', {})
 
 
 def stock_similar(request):
@@ -44,14 +48,15 @@ def stock_similar(request):
         return HttpResponse(json.dumps({'status': 'error', 'message': 'no data'}))
     code_list = result[0]
     trade_date_list = result[1]
-    return_data = [code_list, trade_date_list, []]
+    return_data = {'status': 'ok', 'code': code_list, 'date': trade_date_list, 'scope': []}
     for i in range(len(code_list)):
         stock_data = StockData.objects.filter(code=code_list[i],
-                                            trade_date__gt=trade_date_list[i]).order_by('trade_date')[:1][0]
-        return_data[2].append(stock_data.p_change)
-    return HttpResponse(json.dumps({'status': 'ok', 'data': return_data}, cls=MyJSONEncoder))
+                                              trade_date__gt=trade_date_list[i]).order_by('trade_date')[:1][0]
+        return_data['scope'].append(stock_data.p_change)
+    return HttpResponse(json.dumps(return_data, cls=MyJSONEncoder))
 
 stock_urls = (
-    url(r'^api/stock/$', stock_index),
+    url(r'^service/$', stock_index),
+    url(r'^service/similar_analysis/$', stock_similar_home),
     url(r'^api/stock/similar/$', stock_similar)
 )
