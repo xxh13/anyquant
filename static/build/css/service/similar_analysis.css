@@ -1,0 +1,75 @@
+
+/*---------------------start similar_analysis----------------*/
+#similar-analysis {
+  width: 100%;
+  min-height: 650px;
+  max-height: 1024px;
+  min-width: 1024px;
+  text-align: center;
+  padding-top: 100px;}
+
+#similar-analysis-header {
+  margin-left: 8%;
+  margin-right: 15%;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #E0E0E0; }
+
+#service-name {
+  font-size: 25px;
+  float: left;}
+
+.search-form {
+  width: 80%;
+  float: right;}
+.search-form label {
+    font-size:16px;
+}
+.search-form #stock-code {
+  margin-right:20px;
+  width: 40%;
+  display:inline;}
+
+.search-form #myCal {
+  display:inline; }
+
+.search-form #searchbtn {
+  width: 70px;
+  /*padding-left:10px;*/}
+
+#similar-analysis-content {
+  width:600px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:25px;
+  text-align:center;}
+
+  #similar-analysis-content th {
+    text-align:center;
+    /*vertical-align:middle;
+    height:40px;*/
+  }
+  #similar-analysis-content td {
+    text-align:center;
+    vertical-align:middle;
+  }
+
+  #cc {
+     width:300px;
+     height:300px;
+     position:absolute;
+     z-index:1;
+     left:0;
+     display: none;
+  }
+
+#myCal {
+    background-color:#FFFFFF
+}
+
+#wrapper {
+    margin-right:20px;
+    width: 20%;
+    display:inline-block;
+    position:relative;
+}
+/*---------------------end similar_analysis----------------*/

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}相似趋势{% endblock %}
+
+{% block cssfile %}
+<link rel="stylesheet" href="/static/vender/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/build/css/service/similar_analysis.css" type="text/css">
+<link rel="stylesheet" href="/static/build/css/service/calendar.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div id="similar-analysis">
+    <div id="similar-analysis-header" class="row">
+        <div id="service-name">相似分析</div>
+        <div class="search-form">
+            <form>
+                <label>股票代码：</label>
+                <input name="stock_code" id="stock-code" class="form-control" type="text" placeholder="输入股票代码，看最相似的走势"/>
+                <label>日期：</label>
+                <div id="wrapper">
+                <input name="trade_date" id="myCal" readonly="readonly" class="form-control" type="text" placeholder="输入日期"/>
+                <div id="cc" class="easyui-calendar"></div>
+                </div>
+                <input id="searchbtn" class="btn btn-danger pull-right btn_new" type="button" value="查询">
+            </form>
+        </div>
+    </div>
+    <div id="similar-analysis-content">
+        <table class="table" id="input_data">
+            <tr>
+                <th>匹配形态(股票代码/日期)</th>
+                <th>预期涨幅</th>
+            </tr>
+
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsfile %}
+<script src="https://www.jeasyui.com/easyui/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="https://www.jeasyui.com/easyui/jquery.easyui.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#cc').calendar({
+            weeks:['六','一','二','三','四','五','日'],
+            months:['一月', '二月', '三月', '四月', '五月', '六月', '七月',
+                '八月', '九月', '十月', '十一月', '十二月'],
+            onSelect:function (date) {
+                $('#myCal').val(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
+                    date.getDate());
+                $('#cc').css('display','none');
+            }
+        });
+        $('#myCal').click(function () {
+           $('#cc').css('display','block');
+        });
+        $('#searchbtn').click(function(){
+            var date_str = $('#myCal').val();
+            var stock_str = $('#stock-code').val();
+
+            $.post('/api/stock/similar/',
+             {stock_code:stock_str,trade_date:date_str},function(data,status){
+               /*if(data['status'] == 'error') alert('没有该天数据');
+                else{
+                    var stock_code = data['data'][0]
+                    alert(stock_code);
+                }*/
+               // alert(data);
+                var obj = jQuery.parseJSON(data);
+                var code = obj.code;
+                var date = obj.date;
+                var scope = obj.scope;
+                $('#input_data').empty().append('<tr><th>'+'匹配形态(股票代码/日期)'+'</th><th>'+ '预期涨幅' + '</th></tr>');
+                for(var i = 0; i < code.length; i++){
+                    $('#input_data').append('<tr><td>'+code[i]+ ' / ' + date[i] + '</td><td>'+ scope[i]+'</td></tr>')
+                }
+
+             })
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block load_js_file %}
+{% endblock %}

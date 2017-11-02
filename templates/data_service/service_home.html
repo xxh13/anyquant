@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}数据服务{% endblock %}
+
+{% block cssfile %}
+<link rel="stylesheet" href="/static/vender/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/vender/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/build/css/service/service.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div id="service-list" class="row">
+        <ul class="inline-block">
+            <li class="col-md-3">
+                <a href = "/service/similar_analysis">
+                    <i class="iconfont icon-xiangsifenxi"></i>
+                    <p>相似分析</p>
+                </a>
+            </li>
+            <li class="col-md-3">
+                <a href = "">
+                    <i class="iconfont icon-lianghuaxinchou"></i>
+                    <p>量化薪酬</p>
+                </a>
+            </li>
+            <li class="col-md-3">
+                <a href = "">
+                    <i class="iconfont icon-lianghuajiaoyi"></i>
+                    <p>量化交易</p>
+                </a>
+            </li>
+            <li class="col-md-3">
+                <a href = "">
+                    <i class="iconfont icon-analysis"></i>
+                    <p>分析</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block jsfile %}
+{% endblock %}
+
+{% block load_js_file %}
+{% endblock %}
