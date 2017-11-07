@@ -1,5 +1,6 @@
 import json
 
+
 class MyJSONEncoder(json.JSONEncoder):
     """
     New JSONEcoder to handle ObjectId object

@@ -1,13 +1,14 @@
-from django.shortcuts import render_to_response
-from django.conf.urls import url
-from django.http import HttpResponse
-from servies_model.similar_search.search_ts import search_similar
-
 import json
 from datetime import datetime
 
+from django.conf.urls import url
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
+
 from models import StockData
-from MyJson import MyJSONEncoder
+from servies_model.similar_search.search_ts import search_similar
+from util.MyJson import MyJSONEncoder
+
 
 # Create your views here.
 
@@ -54,6 +55,15 @@ def stock_similar(request):
                                               trade_date__gt=trade_date_list[i]).order_by('trade_date')[:1][0]
         return_data['scope'].append(stock_data.p_change)
     return HttpResponse(json.dumps(return_data, cls=MyJSONEncoder))
+
+
+def complete_stock(request):
+    """
+    :param request:
+    :return:
+    """
+    pass
+
 
 stock_urls = (
     url(r'^service/$', stock_index),
