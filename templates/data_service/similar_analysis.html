@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}相似趋势{% endblock %}
+{% block title %}相似分析{% endblock %}
 
 {% block cssfile %}
 <link rel="stylesheet" href="/static/vender/css/bootstrap.min.css" type="text/css" />
@@ -11,21 +11,24 @@
 
 {% block content %}
 <div id="similar-analysis">
+
     <div id="similar-analysis-header" class="row">
         <div id="service-name">相似分析</div>
-        <div class="search-form">
-            <form>
+        <form>
+            <input id="advancedbtn" class="btn btn-danger pull-right btn_new" type="button" value="高级定制">
+            <div class="search-form">
                 <label>股票代码：</label>
                 <input name="stock_code" id="stock-code" class="form-control" type="text" placeholder="输入股票代码，看最相似的走势"/>
                 <label>日期：</label>
                 <div id="wrapper">
-                <input name="trade_date" id="myCal" readonly="readonly" class="form-control" type="text" placeholder="输入日期"/>
-                <div id="cc" class="easyui-calendar"></div>
+                    <input name="trade_date" id="myCal" readonly="readonly" class="form-control" type="text" placeholder="输入日期"/>
+                    <div id="cc" class="easyui-calendar"></div>
                 </div>
-                <input id="searchbtn" class="btn btn-danger pull-right btn_new" type="button" value="查询">
-            </form>
-        </div>
+                <input id="searchbtn" class="btn btn-danger btn_new" type="button" value="查询">
+            </div>
+        </form>
     </div>
+
     <div id="similar-analysis-content">
         <table class="table" id="input_data">
             <tr>
@@ -35,14 +38,71 @@
 
         </table>
     </div>
+
+
+    <div id="advanced-customization">
+        <div id="advtop">
+            <h4>高级定制选项</h4>
+            <img id="advclose" src="/static/build/css/service/close.png">
+        </div>
+        <div id="stock-step">
+            <h5 class="cus-title">时间序列长度</h5>
+            <label>step:</label>
+            <select name="step" class="form-control">
+                <option value="3">3天</option>
+                <option value="5" selected>5天</option>
+                <option value="7">7天</option>
+                <option value="9">9天</option>
+            </select>
+        </div>
+        <div id="stock-feature">
+            <h5 class="cus-title">聚类属性</h5>
+            <label>feature:</label>
+            <select name="feature" class="form-control">
+                <option value="close" selected>close</option>
+                <option value="open">open</option>
+                <option value="high">high</option>
+                <option value="low">low</option>
+                <option value="volume">volume</option>
+            </select>
+        </div>
+        <div id="attribute-weight">
+            <h5 class="cus-title">属性权值</h5>
+            <label>close:</label>
+            <input name="close" class="form-control" type="text" value="0.6"/>
+            <label>open:</label>
+            <input name="open" class="form-control" type="text" value="0.1"/>
+            <label>high:</label>
+            <input name="high" class="form-control" type="text" value="0.1"/>
+            <label id="stock-low">low:</label>
+            <input name="low" class="form-control" type="text" value="0.1"/>
+            <label>volume:</label>
+            <input name="volume" class="form-control" type="text" value="0.1"/>
+        </div>
+        <div id="sc">
+            <input id="confirmbtn" class="btn btn-danger pull-right btn_new" type="button" value="确定">
+            <input id="cancelbtn" class="btn pull-right btn_new" type="button" value="取消">
+        </div>
+    </div>
+
 </div>
 {% endblock %}
 
 {% block jsfile %}
 <script src="https://www.jeasyui.com/easyui/jquery-1.11.3.min.js" type="text/javascript"></script>
 <script src="https://www.jeasyui.com/easyui/jquery.easyui.min.js" type="text/javascript"></script>
+
 <script>
     $(function () {
+
+        var step_str = 5;
+        var feature_str = 'close';
+        var close_str = 0.6;
+        var open_str = 0.1;
+        var high_str = 0.1;
+        var low_str = 0.1;
+        var volume_str = 0.1;
+
         $('#cc').calendar({
             weeks:['六','一','二','三','四','五','日'],
             months:['一月', '二月', '三月', '四月', '五月', '六月', '七月',
@@ -53,32 +113,59 @@
                 $('#cc').css('display','none');
             }
         });
-        $('#myCal').click(function () {
+        $('#myCal').click(function() {
            $('#cc').css('display','block');
         });
+
+        
+        $('#advancedbtn').click(function() {
+           $('#advanced-customization').css('display','block');
+        });
+
+        $('#confirmbtn').click(function() {
+            step_str = $('#stock-step select[name=step]').val();
+            feature_str = $('#stock-feature select[name=feature]').val();
+            close_str = $('#attribute-weight input[name=close]').val();
+            open_str = $('#attribute-weight input[name=open]').val();
+            high_str = $('#attribute-weight input[name=high]').val();
+            low_str = $('#attribute-weight input[name=low]').val();
+            volume_str = $('#attribute-weight input[name=volume]').val();
+            $('#advanced-customization').css('display', 'none');
+        });
+
+        $('#cancelbtn').click(function() {
+            $('#advanced-customization').css('display', 'none');
+        });
+
+        $('#advclose').click(function() {
+            $('#advanced-customization').css('display', 'none');
+        });
+        
+
         $('#searchbtn').click(function(){
             var date_str = $('#myCal').val();
             var stock_str = $('#stock-code').val();
-
-            $.post('/api/stock/similar/',
-             {stock_code:stock_str,trade_date:date_str},function(data,status){
-               /*if(data['status'] == 'error') alert('没有该天数据');
-                else{
-                    var stock_code = data['data'][0]
-                    alert(stock_code);
-                }*/
-               // alert(data);
+   
+            $.post('/api/stock/similar/',{stock_code:stock_str,trade_date:date_str,step:step_str,feature:feature_str,close:close_str,open:open_str,high:high_str,low:low_str,volume:volume_str},function(data,status){
                 var obj = jQuery.parseJSON(data);
-                var code = obj.code;
-                var date = obj.date;
-                var scope = obj.scope;
-                $('#input_data').empty().append('<tr><th>'+'匹配形态(股票代码/日期)'+'</th><th>'+ '预期涨幅' + '</th></tr>');
-                for(var i = 0; i < code.length; i++){
-                    $('#input_data').append('<tr><td>'+code[i]+ ' / ' + date[i] + '</td><td>'+ scope[i]+'</td></tr>')
+                if(obj.status == 'error') {
+                    alert(obj.message);
+                }
+                else if(obj.status == 'ok') {
+                    var code = obj.code;
+                    var date = obj.date;
+                    var scope = obj.scope;
+                    $('#input_data').empty().append('<tr><th>'+'匹配形态(股票代码/日期)'+'</th><th>'+ '预期涨幅' + '</th></tr>');
+                    for(var i = 0; i < code.length; i++){
+                        $('#input_data').append('<tr><td>'+code[i]+ ' / ' + date[i] + '</td><td>'+ scope[i]+'</td></tr>');
+                    }
+
                 }
 
              })
         });
+
+
     });
 </script>
 

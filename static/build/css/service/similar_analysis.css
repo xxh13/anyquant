@@ -10,7 +10,7 @@
 
 #similar-analysis-header {
   margin-left: 8%;
-  margin-right: 15%;
+  margin-right: 8%;
   padding-bottom: 5px;
   border-bottom: solid 1px #E0E0E0; }
 
@@ -19,7 +19,7 @@
   float: left;}
 
 .search-form {
-  width: 80%;
+  width: 650px;
   float: right;}
 .search-form label {
     font-size:16px;
@@ -34,6 +34,7 @@
 
 .search-form #searchbtn {
   width: 70px;
+  display:inline;                                
   /*padding-left:10px;*/}
 
 #similar-analysis-content {
@@ -72,4 +73,87 @@
     display:inline-block;
     position:relative;
 }
+
+#advancedbtn {
+    margin-left:15px;
+}
 /*---------------------end similar_analysis----------------*/
+
+/*---------------------start advanced_customization----------------*/
+#advanced-customization {
+     width:440px;
+     height:240px;
+     position:absolute;
+     z-index:2;
+     left:50%;
+     top:50%;
+     margin-left:-220px;
+     margin-top:-100px;
+     background-color:#FCFCFC;
+     border-radius:10px;
+     border: solid 2px #CC3333;
+     text-align:left;
+     display: none;
+}
+
+#advtop {
+    border-bottom:solid 1px #E0E0E0;
+    margin-bottom:10px;
+}
+#advtop h4 {
+    padding-left:20px;
+    display:inline-block;
+}
+
+#advclose {
+    margin-right:10px;
+    margin-top:10px;
+    float:right;
+    /*background:url(/static/build/css/service/close.png) center right no-repeat;*/
+}
+
+#advanced-customization h5 {
+    margin-right:10px;
+}
+
+#stock-step,#stock-feature,#attribute-weight {
+    padding:5px 10px 5px 0px;
+}
+#advanced-customization select {
+    width:80px;
+    height:25px;
+    padding-top:2px;
+    padding-bottom:3px;
+    text-align:center;
+    display:inline;
+}
+#advanced-customization input {
+    width:70px;
+    height:25px;
+    display:inline;
+}
+
+.cus-title {
+    color:#FFFFFF;
+    padding:5px 5px 5px 5px;
+    display:inline;
+    background-color: #CC3333;
+}
+
+#stock-low {
+    margin-left:80px;
+}
+#sc {
+    margin-top:8px;
+}
+#sc input {
+    height:28px;
+    line-height:15px;
+    margin-right:5px;
+}
+/*---------------------end advanced_customization----------------*/
+
+
+/*---------------------start container----------------
+
+---------------------end container----------------*/
