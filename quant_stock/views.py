@@ -5,7 +5,7 @@ from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 
-from models import StockData
+from models import StockData, StockInfo
 from servies_model.similar_search.search_ts import search_similar
 from util.MyJson import MyJSONEncoder
 
@@ -62,11 +62,32 @@ def complete_stock(request):
     :param request:
     :return:
     """
-    pass
+    if request.method != 'GET':
+        return HttpResponse(json.dumps({'status': 'error'}))
+    prefix = request.GET.get('prefix', None)
+    limit = request.GET.get('limit', 100)
+    if prefix is None:
+        stock_info = StockInfo.objects.filter()
+    else:
+        if '0' <= prefix[0] <= '9':
+            stock_info = StockInfo.objects.filter(code__startswith=prefix)
+        elif u'\u4e00' <= prefix[0] <= prefix[0] <= u'\u9fbb':
+            stock_info = StockInfo.objects.filter(name__startswith=prefix)
+        elif 'A' <= prefix[0] <= 'Z' or 'a' <= prefix <= 'z':
+            try:
+                stock_info = StockInfo.objects.filter(aggrv__startswith=str(prefix).upper())
+            except Exception as e:
+                return HttpResponse(json.dumps({'status': 'error', 'message': 'invalid format'}))
+        else:
+            return HttpResponse(json.dumps({'status': 'error', 'message': 'invalid format'}))
+    stock_filter_info = map(lambda x: {'code': x.code, 'name': x.name, 'aggrv': x.aggrv}, stock_info)
+    return_data = {'status': 'ok', 'data': stock_filter_info[:limit]}
+    return HttpResponse(json.dumps(return_data))
 
 
 stock_urls = (
     url(r'^service/$', stock_index),
     url(r'^service/similar_analysis/$', stock_similar_home),
-    url(r'^api/stock/similar/$', stock_similar)
+    url(r'^api/stock/similar/$', stock_similar),
+    url(r'^api/stock/complete', complete_stock)
 )
