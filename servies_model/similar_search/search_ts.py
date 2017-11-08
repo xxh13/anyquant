@@ -19,9 +19,9 @@ class find_similar(object):
         """
         rootdir=os.getcwd() + '\\servies_model\\similar_search'
         path_df=os.path.join(rootdir,'ts_{0}_{1}.pkl'.format(step,feature_name))
-        path_df_raw=os.path.join(rootdir,'ts_raw_{0}_{1}.pkl'.format(step,feature_name))
+        #path_df_raw=os.path.join(rootdir,'ts_raw_{0}_{1}.pkl'.format(step,feature_name))
         df=pd.read_pickle(path_df)
-        df_raw=pd.read_pickle(path_df_raw)
+        #df_raw=pd.read_pickle(path_df_raw)
         try:
             label=df[(df['code']==code) & (df['trade_date']==date)]['label'].values[0]
             ts_close=df[(df['code']==code) & (df['trade_date']==date)]['time_series_close'].values[0]
@@ -34,7 +34,7 @@ class find_similar(object):
                 self.erro=True
                 return
         self.df=df[df['label']==label]
-        self.df_raw=df_raw
+        #self.df_raw=df_raw
         self.ts={'time_series_close':ts_close,'time_series_high':ts_high,'time_series_low':ts_low,
                  'time_series_open':ts_open,'time_series_volume':ts_vol}
 

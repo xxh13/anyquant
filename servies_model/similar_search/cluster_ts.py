@@ -26,19 +26,20 @@ class cluster_ts(object):
         '''
         self.step=step
         time_series={'code':[],'trade_date':[],'time_series_close':[],'time_series_open':[],'time_series_high':[],'time_series_low':[],'time_series_volume':[]}
-        time_series_raw={'code':[],'trade_date':[],'time_series_close':[],'time_series_open':[],'time_series_high':[],'time_series_low':[],'time_series_volume':[]}
+        #time_series_raw={'code':[],'trade_date':[],'time_series_close':[],'time_series_open':[],'time_series_high':[],'time_series_low':[],'time_series_volume':[]}
         for code in self.code_set:
+            print(code)
             temp=self.stock_data.loc[code]
             lst_ts_close=[(temp.iloc[i:i+step]['close']/np.linalg.norm(temp.iloc[i:i+step]['close'])).tolist() for i in range(0,len(temp)-step,gap)]
-            lst_ts_close_raw=[(temp.iloc[i:i+step]['close']).tolist() for i in range(0,len(temp)-step,gap)]
+            #lst_ts_close_raw=[(temp.iloc[i:i+step]['close']).tolist() for i in range(0,len(temp)-step,gap)]
             lst_ts_open=[(temp.iloc[i:i+step]['open']/np.linalg.norm(temp.iloc[i:i+step]['open'])).tolist() for i in range(0,len(temp)-step,gap)]
-            lst_ts_open_raw=[(temp.iloc[i:i+step]['open']).tolist() for i in range(0,len(temp)-step,gap)]
+            #lst_ts_open_raw=[(temp.iloc[i:i+step]['open']).tolist() for i in range(0,len(temp)-step,gap)]
             lst_ts_high=[(temp.iloc[i:i+step]['high']/np.linalg.norm(temp.iloc[i:i+step]['high'])).tolist() for i in range(0,len(temp)-step,gap)]
-            lst_ts_high_raw=[(temp.iloc[i:i+step]['high']).tolist() for i in range(0,len(temp)-step,gap)]
+            #lst_ts_high_raw=[(temp.iloc[i:i+step]['high']).tolist() for i in range(0,len(temp)-step,gap)]
             lst_ts_low=[(temp.iloc[i:i+step]['low']/np.linalg.norm(temp.iloc[i:i+step]['low'])).tolist() for i in range(0,len(temp)-step,gap)]
-            lst_ts_low_raw=[(temp.iloc[i:i+step]['low']).tolist() for i in range(0,len(temp)-step,gap)]
+            #lst_ts_low_raw=[(temp.iloc[i:i+step]['low']).tolist() for i in range(0,len(temp)-step,gap)]
             lst_ts_volume=[(temp.iloc[i:i+step]['volume']/np.linalg.norm(temp.iloc[i:i+step]['volume'])).tolist() for i in range(0,len(temp)-step,gap)]
-            lst_ts_volume_raw=[(temp.iloc[i:i+step]['volume']).tolist() for i in range(0,len(temp)-step,gap)]
+            #lst_ts_volume_raw=[(temp.iloc[i:i+step]['volume']).tolist() for i in range(0,len(temp)-step,gap)]
             lst_code=[code]*len(lst_ts_close)
             lst_date=[temp.iloc[i].trade_date for i in range(0,len(temp)-step,gap)]
             time_series['code']+=lst_code
@@ -48,15 +49,15 @@ class cluster_ts(object):
             time_series['time_series_high']+=lst_ts_high
             time_series['time_series_low']+=lst_ts_low
             time_series['time_series_volume']+=lst_ts_volume
-            time_series_raw['code']+=lst_code
-            time_series_raw['trade_date']+=lst_date
-            time_series_raw['time_series_close']+=lst_ts_close_raw
-            time_series_raw['time_series_open']+=lst_ts_open_raw
-            time_series_raw['time_series_high']+=lst_ts_high_raw
-            time_series_raw['time_series_low']+=lst_ts_low_raw
-            time_series_raw['time_series_volume']+=lst_ts_volume_raw
+            #time_series_raw['code']+=lst_code
+            #time_series_raw['trade_date']+=lst_date
+            #time_series_raw['time_series_close']+=lst_ts_close_raw
+            #time_series_raw['time_series_open']+=lst_ts_open_raw
+            #time_series_raw['time_series_high']+=lst_ts_high_raw
+            #time_series_raw['time_series_low']+=lst_ts_low_raw
+            #time_series_raw['time_series_volume']+=lst_ts_volume_raw
         self.df=pd.DataFrame(time_series)
-        self.df_raw=pd.DataFrame(time_series_raw)
+        #self.df_raw=pd.DataFrame(time_series_raw)
 
     def cluster(self,center_num):
         '''
@@ -66,18 +67,22 @@ class cluster_ts(object):
         self.kmeans=sklearn.cluster.KMeans(n_clusters=center_num,max_iter=1000,n_jobs=-1)
         self.kmeans.fit(self.df['time_series_'+self.feature_name].tolist())
         self.df['label']=self.kmeans.labels_
-        self.df_raw['label']=self.kmeans.labels_
+        #self.df_raw['label']=self.kmeans.labels_
 
     def save(self):
         self.df.to_pickle('ts_{0}_{1}.pkl'.format(self.step,self.feature_name))
-        self.df_raw.to_pickle('ts_raw_{0}_{1}.pkl'.format(self.step,self.feature_name))
+        #self.df_raw.to_pickle('ts_raw_{0}_{1}.pkl'.format(self.step,self.feature_name))
 
 if __name__=='__main__':
     con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
     for feature in ['close','open','high','low','volume']:
-        for step in [5,7]:
+        for step in [3,5,7,9]:
             cluster=cluster_ts(con,feature)
+            print('获取数据成功{},{}'.format(step,feature))
             cluster.split_time_series(step=step)
-            cluster.cluster(1000)
+            print('归一化成功{},{}'.format(step,feature))
+            cluster.cluster(10000)
+            print('聚类成功{},{}'.format(step,feature))
             cluster.save()
+            print('保存成功{},{}'.format(step,feature))
     con.close()
