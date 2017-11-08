@@ -68,7 +68,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'quant_base',
-        'HOST':  'localhost', #'121.41.106.89'
+        'HOST':  '120.27.199.164', #'121.41.106.89'
         'PORT': 3306,
         'USER': 'quant',
         'PASSWORD':  'quant', #'Sydar10',

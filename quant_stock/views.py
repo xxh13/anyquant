@@ -1,3 +1,4 @@
+# coding:utf-8
 import json
 from datetime import datetime
 
@@ -34,7 +35,13 @@ def stock_similar(request):
     data = request.POST
     code = data.get('stock_code', None)
     trade_date = data.get('trade_date', None)
-    feature = data.get('feature', 'close')
+    step = data.get('stock_step', 5)
+    feature = data.get('stock_feature', 'close')
+    close = data.get('stock_close', 0.6)
+    open = data.get('stock_open', 0.1)
+    high = data.get('stock_high', 0.1)
+    low = data.get('stock_low', 0.1)
+    volume = data.get('stock_volume',0.1)
     if code is None:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'required param code are not passed'}))
     if trade_date is None:
@@ -43,8 +50,9 @@ def stock_similar(request):
         trade_date = datetime.strptime(trade_date, '%Y-%m-%d').date()
     except Exception:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'invalid date format'}))
-    dict_param = {'close': 0.6, 'open': 0.1, 'high': 0.1, 'low': 0.1, 'volume': 0.1}
-    ok, result = search_similar(code, trade_date, feature, **dict_param)
+
+    dict_param = {'close': close, 'open': open, 'high': high, 'low': low, 'volume': volume}
+    ok, result = search_similar(code, trade_date, feature, step, **dict_param)
     if not ok:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'no data'}))
     code_list = result[0]
@@ -85,9 +93,42 @@ def complete_stock(request):
     return HttpResponse(json.dumps(return_data))
 
 
+def stock_similar_chart(request):
+    if request.method != 'POST':
+        return HttpResponse(json.dumps({'status': 'request method error'}))
+    data = request.POST
+    code = data.get('stock_code', None)
+    if code is None:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'required param code are not passed'}))
+    trade_date = data.get('trade_date', None)
+    if trade_date is None:
+        return HttpResponse(json.dumps({'status': 'error', 'message': 'required param trade_date are not passed'}))
+    trade_date = datetime.strptime(trade_date, '%Y-%m-%d').date()
+    stocks_data = StockData.objects.filter(code=code,trade_date__lte=trade_date).order_by('-trade_date')[0:]
+    if len(stocks_data) >= 20:
+        stocks_data = stocks_data[0:20]
+    return_data = {'status': 'ok', 'dataList': []}
+    stock_data = []
+    for i in range(len(stocks_data)-1,-1,-1):
+        stock_data.append(stocks_data[i].trade_date)
+        stock_data.append(stocks_data[i].open)
+        stock_data.append(stocks_data[i].close)
+        stock_data.append(stocks_data[i].low)
+        stock_data.append(stocks_data[i].high)
+        # stock_data.append(stocks_data[i].volume)
+        return_data.get('dataList').append(stock_data)
+        stock_data = []
+    return HttpResponse(json.dumps(return_data, cls=MyJSONEncoder))
+
+
+
+
+
+
 stock_urls = (
     url(r'^service/$', stock_index),
     url(r'^service/similar_analysis/$', stock_similar_home),
     url(r'^api/stock/similar/$', stock_similar),
-    url(r'^api/stock/complete', complete_stock)
+    url(r'^api/stock/complete', complete_stock),
+    url(r'^service/similar_analysis/chart$', stock_similar_chart)
 )

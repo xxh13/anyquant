@@ -17,7 +17,7 @@ class find_similar(object):
         :param feature_name: string
         :param step: int
         """
-        rootdir=os.getcwd() + '/servies_model/similar_search'
+        rootdir=os.getcwd() + '\\servies_model\\similar_search'
         path_df=os.path.join(rootdir,'ts_{0}_{1}.pkl'.format(step,feature_name))
         path_df_raw=os.path.join(rootdir,'ts_raw_{0}_{1}.pkl'.format(step,feature_name))
         df=pd.read_pickle(path_df)
