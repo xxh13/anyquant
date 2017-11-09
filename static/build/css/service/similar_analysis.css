@@ -116,9 +116,9 @@
     margin-right:10px;
 }
 
-#stock-step,#stock-feature,#attribute-weight {
-    padding:5px 10px 5px 0px;
-}
+/*#stock-step,#stock-feature,#attribute-weight {*/
+    /*padding:5px 10px 5px 0px;*/
+/*}*/
 #advanced-customization select {
     width:80px;
     height:25px;
