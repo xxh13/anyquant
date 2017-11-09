@@ -74,7 +74,8 @@ class cluster_ts(object):
         #self.df_raw.to_pickle('ts_raw_{0}_{1}.pkl'.format(self.step,self.feature_name))
 
 if __name__=='__main__':
-    con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
+    #con=sa.create_engine('mysql://quant:quant@120.27.199.164/quant_base').connect()
+    con=sa.create_engine('mysql://root:5757124@localhost/quant').connect()
     for feature in ['close','open','high','low','volume']:
         for step in [3,5,7,9]:
             cluster=cluster_ts(con,feature)
