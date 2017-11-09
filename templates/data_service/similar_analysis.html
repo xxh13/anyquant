@@ -206,7 +206,7 @@
                     var code_str = code_date.substring(0,6);
                     var date_str = code_date.substring(9);
 
-                    $.post('api/stock/chart',{stock_code:code_str,trade_date:date_str},function(data,status){
+                    $.post('/api/stock/chart',{stock_code:code_str,trade_date:date_str},function(data,status){
 
                         var obj = jQuery.parseJSON(data);
 
