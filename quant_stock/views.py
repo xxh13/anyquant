@@ -107,11 +107,11 @@ def stock_chart(request):
     trade_date = datetime.strptime(trade_date, '%Y-%m-%d').date()
     stocks_data = StockData.objects.filter(code=code,trade_date__lte=trade_date).order_by('-trade_date')[0:]
     stock_info=StockInfo.objects.filter(code=code)[0]
-    print stock_info.name
+    # print stock_info.name
     if len(stocks_data) >= 20:
         stocks_data = stocks_data[0:20]
     return_data = {'status': 'ok', 'dataList': []}
-    return_data['stock_name']=stock_info.name
+    return_data['stock_name']=stock_info.name.encode("utf-8")
     stock_data = []
     for i in range(len(stocks_data)-1,-1,-1):
         stock_data.append(stocks_data[i].trade_date)
