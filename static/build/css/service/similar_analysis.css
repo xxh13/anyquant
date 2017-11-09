@@ -3,14 +3,14 @@
 #similar-analysis {
   width: 100%;
   min-height: 650px;
-  max-height: 1024px;
+  /*max-height: 1024px;*/
   min-width: 1024px;
   text-align: center;
   padding-top: 100px;}
 
 #similar-analysis-header {
   margin-left: 8%;
-  margin-right: 8%;
+  margin-right: 8%;                                        
   padding-bottom: 5px;
   border-bottom: solid 1px #E0E0E0; }
 
@@ -34,7 +34,7 @@
 
 .search-form #searchbtn {
   width: 70px;
-  display:inline;                                
+  display:inline;                                            
   /*padding-left:10px;*/}
 
 #similar-analysis-content {
@@ -154,6 +154,10 @@
 /*---------------------end advanced_customization----------------*/
 
 
-/*---------------------start container----------------
+/*---------------------start container----------------*/
 
----------------------end container----------------*/
+#container {
+    display: none;
+}
+/*---------------------end container----------------*/
+

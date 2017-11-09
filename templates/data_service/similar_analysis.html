@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div id="similar-analysis">
 
     <div id="similar-analysis-header" class="row">
@@ -83,16 +85,24 @@
             <input id="confirmbtn" class="btn btn-danger pull-right btn_new" type="button" value="确定">
             <input id="cancelbtn" class="btn pull-right btn_new" type="button" value="取消">
         </div>
-    </div>
+    </div> 
+
+
+    <div id="container">
+
+    </div>  
+
 
 </div>
+
 {% endblock %}
 
 {% block jsfile %}
 <script src="https://www.jeasyui.com/easyui/jquery-1.11.3.min.js" type="text/javascript"></script>
 <script src="https://www.jeasyui.com/easyui/jquery.easyui.min.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.1.10/echarts.min.js"></script>
 <script>
+
     $(function () {
 
         var step_str = 5;
@@ -102,6 +112,7 @@
         var high_str = 0.1;
         var low_str = 0.1;
         var volume_str = 0.1;
+        
 
         $('#cc').calendar({
             weeks:['六','一','二','三','四','五','日'],
@@ -123,13 +134,34 @@
         });
 
         $('#confirmbtn').click(function() {
-            step_str = $('#stock-step select[name=step]').val();
-            feature_str = $('#stock-feature select[name=feature]').val();
-            close_str = $('#attribute-weight input[name=close]').val();
-            open_str = $('#attribute-weight input[name=open]').val();
-            high_str = $('#attribute-weight input[name=high]').val();
-            low_str = $('#attribute-weight input[name=low]').val();
-            volume_str = $('#attribute-weight input[name=volume]').val();
+            
+            // var close_str_test = $('#attribute-weight input[name=close]').val();
+            // var open_str_test = $('#attribute-weight input[name=open]').val();
+            // var high_str_test = $('#attribute-weight input[name=high]').val();
+            // var low_str_test = $('#attribute-weight input[name=low]').val();
+            // var volume_str_test = $('#attribute-weight input[name=volume]').val();
+            
+            // var re = /^0\.[0-9]*$/;
+            // var flag = re.test(close_str_test) && re.test(open_str_test) && re.test(high_str_test) && re.test(low_str_test) && re.test(volume_str_test);
+            // var sum = parseFloat(close_str_test) + parseFloat(open_str_test) + parseFloat(high_str_test) + parseFloat(low_str_test) + parseFloat(volume_str_test);
+
+            // alert(flag);
+            // alert(sum);
+            // if(flag !== true) {
+            //     alert("每一项属性的权值应大于0小于1，请输入正确的属性权值！")；
+            // }else if (sum < 0.999999 || sum > 1) {
+            //     alert("属性权值之和应为1，请输入正确的属性权值！");
+            // }else {
+                step_str = $('#stock-step select[name=step]').val();
+                feature_str = $('#stock-feature select[name=feature]').val();
+                close_str = $('#attribute-weight input[name=close]').val();
+                open_str = $('#attribute-weight input[name=open]').val();
+                high_str = $('#attribute-weight input[name=high]').val();
+                low_str = $('#attribute-weight input[name=low]').val();
+                volume_str = $('#attribute-weight input[name=volume]').val();
+            // }
+
+
             $('#advanced-customization').css('display', 'none');
         });
 
@@ -145,29 +177,272 @@
         $('#searchbtn').click(function(){
             var date_str = $('#myCal').val();
             var stock_str = $('#stock-code').val();
-   
+
+            
             $.post('/api/stock/similar/',{stock_code:stock_str,trade_date:date_str,step:step_str,feature:feature_str,close:close_str,open:open_str,high:high_str,low:low_str,volume:volume_str},function(data,status){
-                var obj = jQuery.parseJSON(data);
-                if(obj.status == 'error') {
-                    alert(obj.message);
-                }
-                else if(obj.status == 'ok') {
-                    var code = obj.code;
-                    var date = obj.date;
-                    var scope = obj.scope;
-                    $('#input_data').empty().append('<tr><th>'+'匹配形态(股票代码/日期)'+'</th><th>'+ '预期涨幅' + '</th></tr>');
-                    for(var i = 0; i < code.length; i++){
-                        $('#input_data').append('<tr><td>'+code[i]+ ' / ' + date[i] + '</td><td>'+ scope[i]+'</td></tr>');
+                    var obj = jQuery.parseJSON(data);
+                    if(obj.status == 'error') {
+                        alert(obj.message);
+                    }                
+                    else if(obj.status == 'ok') {
+                        var code = obj.code;
+                        var date = obj.date;
+                        var scope = obj.scope;
+                        $('#input_data').empty().append('<tr><th>'+'匹配形态(股票代码/日期)'+'</th><th>'+ '预期涨幅' + '</th></tr>');
+                        for(var i = 0; i < code.length; i++){
+                            $('#input_data').append('<tr><td>'+code[i]+ ' / ' + date[i] + '</td><td>'+ scope[i]+'</td></tr>');
+                        }                                    
                     }
-
-                }
-
-             })
+            });
+        
         });
 
 
+        $('#input_data').on('click','tr',function(){
+                var tds = $(this).find("td");
+                //alert(tds.length);
+                if(tds.length == 2){
+                    var code_date = tds.eq(0).text();
+                    var code_str = code_date.substring(0,6);
+                    var date_str = code_date.substring(9);
+
+                    $.post('api/stock/chart',{stock_code:code_str,trade_date:date_str},function(data,status){
+
+                        var obj = jQuery.parseJSON(data);
+
+                        if(obj.status == 'error') {
+                            alert(obj.message);
+                        }                
+                        else if(obj.status == 'ok') {
+                            $('#container').css({'display':'block', 
+                                         'width':'500px', 
+                                         'height':'300px', 
+                                         'left':'50%',
+                                         'margin-left':'-250px', 
+                                         'margin-bottom':'30px',
+                                         'border-radius':'10px',
+                                         'border':'solid 2px #CC3333'});
+                            candlestick(obj.dataList);
+
+                        }
+                                                
+                    });
+                    
+                }
+                
+            }); 
+
+        $("#input_data").on('mouseover mouseout','tr',function(event){
+            var tds = $(this).find("td");
+            if(tds.length == 2) {
+                if(event.type == 'mouseover'){
+                    $(this).css({"background-color":"#E0E0E0"});
+                }else if(event.type == 'mouseout'){
+                    $(this).css({"background-color":"#FFFFFF"});
+                }
+            }
+            
+            
+        });
+
+        
     });
+
+    function candlestick(stockData){
+        //获取dom元素并进行初始化
+        var dom = document.getElementById("container");
+        //初始化图表
+        var myChart = echarts.init(dom);
+        var app = {};
+        // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+        //数据源
+        var data0 = splitData(stockData);
+        function splitData(rawData) {
+            var categoryData = [];
+            var values = [];
+            for (var i = 0; i < rawData.length; i++) {
+                categoryData.push(rawData[i].splice(0, 1)[0]);
+                values.push(rawData[i])
+            }
+            return {
+                categoryData: categoryData,
+                values: values
+            };
+        }
+        option = null;
+        option = {
+            title: {
+                text: '上证指数',
+                left: 0
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'line'
+                }
+            },
+            legend: {
+                data: ['日K']
+            },
+    //        grid: {
+    //            left: '10%',
+    //            right: '10%',
+    //            bottom: '15%'
+    //        },
+            xAxis: {
+                type: 'category',
+                data: data0.categoryData,
+                //scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},//X/Y轴O刻度是否重合
+                splitLine: {show: false},//是否显示分割线
+                //splitNumber: 20,//分割数量
+                min: 'dataMin',//坐标轴的最小刻目,设置成dataMin话取的最小值就是数据中的最小值
+                max: 'dataMax' //同上
+            },
+            yAxis: {
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+    //        dataZoom: [
+    //            {
+    //                type: 'inside',
+    //                start: 50,
+    //                end: 100
+    //            },
+    //            {
+    //                show: true,
+    //                type: 'slider',
+    //                y: '90%',
+    //                start: 50,
+    //                end: 100
+    //            }
+    //        ],
+            series: [
+                {
+                    name: '日K',
+                    type: 'candlestick',
+                    data: data0.values,
+                    markPoint: {
+                        label: {//标注文字
+                            normal: {
+                                formatter: function (param) {
+                                    return param != null ? Math.round(param.value) : ''; //判断param是不是有值，如果有，返回四舍五入后的值，如果没有就返回空
+                                }
+                            }
+                        },
+    //                    data: [
+    //                        {
+    //                            name: 'XX标点',
+    //                            coord: ['2013/5/31', 2300],
+    //                            value: 2300,
+    //                            itemStyle: {
+    //                                normal: {color: 'rgb(41,60,85)'}
+    //                            }
+    //                        },
+    //                        {
+    //                            name: 'highest value',
+    //                            type: 'max',
+    //                            valueDim: 'highest'
+    //                        },
+    //                        {
+    //                            name: 'lowest value',
+    //                            type: 'min',
+    //                            valueDim: 'lowest'
+    //                        },
+    //                        {
+    //                            name: 'average value on close',
+    //                            type: 'average',
+    //                            valueDim: 'close'
+    //                        }
+    //                    ],
+                        tooltip: {
+                            formatter: function (param) {
+                                return param.name + '<br>' + (param.data.coord || '');
+                            }
+                        }
+                    },
+                    markLine: { //画水平线
+                        symbol: ['none', 'none'],
+                        data: [
+    //                        [
+    ////                            {
+    ////                                name: 'from lowest to highest',
+    ////                                type: 'min',
+    ////                                valueDim: 'lowest',
+    ////                                symbol: 'circle',
+    ////                                symbolSize: 10,
+    ////                                label: {
+    ////                                    normal: {show: false},
+    ////                                    emphasis: {show: false}
+    ////                                }
+    ////                            },
+    //                            {
+    //                                type: 'max',
+    //                                valueDim: 'highest',
+    //                                symbol: 'circle',
+    //                                symbolSize: 10,
+    //                                label: {
+    //                                    normal: {show: false},
+    //                                    emphasis: {show: false}
+    //                                }
+    //                            }
+    //                        ],
+                            {
+                                name: 'min line on close',
+                                type: 'min',
+                                valueDim: 'close'
+                            },
+                            {
+                                name: 'max line on close',
+                                type: 'max',
+                                valueDim: 'close'
+                            }
+                        ]
+                    }
+                }
+
+            ]
+        };
+        myChart.setOption(option);
+    //    clearInterval(app.timeTicket);
+    //    app.count = 11;
+    //    app.timeTicket = setInterval(function (){
+    //        axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
+    //
+    //        var data0 = option.series[0].data;
+    //        var data1 = option.series[1].data;
+    //        var data2 = option.series[2].data;
+    //        var data3 = option.series[3].data;
+    //        data0.shift();
+    //        data0.push(2200+Math.random() * 100);
+    //        data1.shift();
+    //        data1.push(2200+Math.random() * 100);
+    //        data2.shift();
+    //        data2.push(2200+Math.random() * 100);
+    //        data3.shift();
+    //        data3.push(2200+Math.random() * 100);
+    //
+    //
+    //        /*option.xAxis[0].data.shift();
+    //        option.xAxis[0].data.push(axisData);
+    //        option.xAxis[1].data.shift();
+    //        option.xAxis[1].data.push(app.count++);*/
+    //
+    //        myChart.setOption(option);
+    //    }, 2000);
+    //    if (option && typeof option === "object") {
+    //        var startTime = +new Date();
+    //        myChart.setOption(option, true);
+    //        var endTime = +new Date();
+    //        var updateTime = endTime - startTime;
+    //        console.log("Time used:", updateTime);
+    //    }
+}
 </script>
+
 
 {% endblock %}
 
