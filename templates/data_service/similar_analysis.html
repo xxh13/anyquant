@@ -43,45 +43,48 @@
 
 
     <div id="advanced-customization">
-        <div id="advtop">
-            <h4>高级定制选项</h4>
-            <img id="advclose" src="/static/build/css/service/close.png">
+        <div class="col-xs-4">
+            <div class="cus-title">时间序列长度</div>
+            <div class="cus-title">聚类属性</div>
+            <div class="cus-title">属性权值</div>
         </div>
-        <div id="stock-step">
-            <h5 class="cus-title">时间序列长度</h5>
-            <label>step:</label>
-            <select name="step" class="form-control">
-                <option value="3">3天</option>
-                <option value="5" selected>5天</option>
-                <option value="7">7天</option>
-                <option value="9">9天</option>
-            </select>
-        </div>
-        <div id="stock-feature">
-            <h5 class="cus-title">聚类属性</h5>
-            <label>feature:</label>
-            <select name="feature" class="form-control">
-                <option value="close" selected>close</option>
-                <option value="open">open</option>
-                <option value="high">high</option>
-                <option value="low">low</option>
-                <option value="volume">volume</option>
-            </select>
-        </div>
-        <div id="attribute-weight">
-            <h5 class="cus-title">属性权值</h5>
-            <label>close:</label>
-            <input name="close" class="form-control" type="text" value="0.6"/>
-            <label>open:</label>
-            <input name="open" class="form-control" type="text" value="0.1"/>
-            <label>high:</label>
-            <input name="high" class="form-control" type="text" value="0.1"/>
-            <label id="stock-low">low:</label>
-            <input name="low" class="form-control" type="text" value="0.1"/>
-            <label>volume:</label>
-            <input name="volume" class="form-control" type="text" value="0.1"/>
-        </div>
-        <div id="sc">
+        <div class="col-xs-8">
+            <div class="cus-container">
+                <label class="cus-label">step:</label>
+                <select name="step" class="form-control">
+                    <option value="3">3天</option>
+                    <option value="5" selected>5天</option>
+                    <option value="7">7天</option>
+                    <option value="9">9天</option>
+                </select>
+            </div>
+            <div class="cus-container">
+                <label class="cus-label">feature:</label>
+                <select name="feature" class="form-control">
+                    <option value="close" selected>close</option>
+                    <option value="open">open</option>
+                    <option value="high">high</option>
+                    <option value="low">low</option>
+                    <option value="volume">volume</option>
+                </select>
+            </div>
+            <div class="cus-container">
+                <label class="cus-label">close:</label>
+                <input name="close" class="form-control cus-form" type="number" value="0.6" step="0.1" min="0" max="1"/>
+                <label class="cus-label second-label">open:</label>
+                <input name="close" class="form-control cus-form" type="number" value="0.1" step="0.1" min="0" max="1"/>
+            </div>
+            <div class="cus-container">
+                <label class="cus-label">high:</label>
+                <input name="close" class="form-control cus-form" type="number" value="0.1" step="0.1" min="0" max="1"/>
+                <label class="cus-label second-label">low:</label>
+                <input name="close" class="form-control cus-form" type="number" value="0.1" step="0.1" min="0" max="1"/>
+            </div>
+            <div class="cus-container">
+                <label class="cus-label">volume:</label>
+                <input name="close" class="form-control cus-form" type="number" value="0.1" step="0.1" min="0" max="1"/>
+            </div>
+            <div id="sc">
             <input id="confirmbtn" class="btn btn-danger pull-right btn_new" type="button" value="确定">
             <input id="cancelbtn" class="btn pull-right btn_new" type="button" value="取消">
         </div>
@@ -90,8 +93,7 @@
 
     <div id="container">
 
-    </div>  
-
+    </div>
 
 </div>
 
