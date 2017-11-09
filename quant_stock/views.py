@@ -35,13 +35,14 @@ def stock_similar(request):
     data = request.POST
     code = data.get('stock_code', None)
     trade_date = data.get('trade_date', None)
-    step = data.get('stock_step', 5)
-    feature = data.get('stock_feature', 'close')
-    close = data.get('stock_close', 0.6)
-    open = data.get('stock_open', 0.1)
-    high = data.get('stock_high', 0.1)
-    low = data.get('stock_low', 0.1)
-    volume = data.get('stock_volume',0.1)
+    step = data.get('step', 5)
+    feature = data.get('feature', 'close')
+    close = data.get('close', 0.6)
+    open = data.get('open', 0.1)
+    high = data.get('high', 0.1)
+    low = data.get('low', 0.1)
+    volume = data.get('volume',0.1)
+    # print step, feature, open, close, low, high,volume
     if code is None:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'required param code are not passed'}))
     if trade_date is None:
@@ -93,7 +94,7 @@ def complete_stock(request):
     return HttpResponse(json.dumps(return_data))
 
 
-def stock_similar_chart(request):
+def stock_chart(request):
     if request.method != 'POST':
         return HttpResponse(json.dumps({'status': 'request method error'}))
     data = request.POST
@@ -105,9 +106,12 @@ def stock_similar_chart(request):
         return HttpResponse(json.dumps({'status': 'error', 'message': 'required param trade_date are not passed'}))
     trade_date = datetime.strptime(trade_date, '%Y-%m-%d').date()
     stocks_data = StockData.objects.filter(code=code,trade_date__lte=trade_date).order_by('-trade_date')[0:]
+    stock_info=StockInfo.objects.filter(code=code)[0]
+    print stock_info.name
     if len(stocks_data) >= 20:
         stocks_data = stocks_data[0:20]
     return_data = {'status': 'ok', 'dataList': []}
+    return_data['stock_name']=stock_info.name
     stock_data = []
     for i in range(len(stocks_data)-1,-1,-1):
         stock_data.append(stocks_data[i].trade_date)
@@ -130,5 +134,5 @@ stock_urls = (
     url(r'^service/similar_analysis/$', stock_similar_home),
     url(r'^api/stock/similar/$', stock_similar),
     url(r'^api/stock/complete', complete_stock),
-    url(r'^service/similar_analysis/chart$', stock_similar_chart)
+    url(r'^api/stock/chart$', stock_chart)
 )
