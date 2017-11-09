@@ -1,3 +1,4 @@
 *.pyc
 code/*/*.py
 .idea/*
+*/migration/*.py
