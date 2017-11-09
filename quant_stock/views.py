@@ -35,13 +35,13 @@ def stock_similar(request):
     data = request.POST
     code = data.get('stock_code', None)
     trade_date = data.get('trade_date', None)
-    step = data.get('step', 5)
+    step = int(data.get('step', 5))
     feature = data.get('feature', 'close')
-    close = data.get('close', 0.6)
-    open = data.get('open', 0.1)
-    high = data.get('high', 0.1)
-    low = data.get('low', 0.1)
-    volume = data.get('volume',0.1)
+    close = float(data.get('close', 0.6))
+    open = float(data.get('open', 0.1))
+    high = float(data.get('high', 0.1))
+    low = float(data.get('low', 0.1))
+    volume = float(data.get('volume',0.1))
     # print step, feature, open, close, low, high,volume
     if code is None:
         return HttpResponse(json.dumps({'status': 'error', 'message': 'required param code are not passed'}))
